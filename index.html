@@ -4,28 +4,55 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Chat con i Ginocchi</title>
+  <!-- Import Google Fonts: Rubik e Roboto Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&family=Rubik:wght@700&display=swap" rel="stylesheet">
+
   <style>
     body {
       background-color: #0e0e0e;
       color: #f0f0f0;
-      font-family: 'Rubik', sans-serif;
+      font-family: 'Roboto Mono', monospace; /* Corpo in Roboto Mono */
       margin: 0;
       padding: 0;
-      text-align: center;
     }
+
     header {
-      background-color: #1e1e1e;
-      padding: 1rem;
+      padding: 2rem 1rem;
+      text-align: center;
+      background-color: #1e1e1e; /* Colore di fallback */
+      background-image:
+        linear-gradient(rgba(14, 14, 14, 0.75), rgba(14, 14, 14, 0.85)),
+        /* *** PERCORSO CORRETTO PER IL BANNER *** */
+        url('La%20migliore%20modificata%20da%20me%20con%20sfondo.png'); /* Spazi sostituiti con %20 */
+      background-size: cover;
+      background-position: center center;
+      position: relative;
     }
+
+    #logo {
+      display: block;
+      margin: 0 auto 1.5rem;
+      max-height: 70px; /* Altezza max logo, puoi cambiarla */
+      width: auto;
+    }
+
     h1 {
-      font-size: 2.2rem;
+      font-size: 2.5rem;
       margin: 0.5rem;
+      font-family: 'Rubik', sans-serif; /* Titolo in Rubik */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     }
-    p {
+
+    header p {
       font-size: 1.1rem;
       margin: 0.5rem auto 1.5rem;
       max-width: 700px;
+      line-height: 1.6;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
     }
+
     .chat-container {
       margin: 2rem auto;
       width: 100%;
@@ -33,7 +60,9 @@
       height: 600px;
       border-radius: 12px;
       overflow: hidden;
+      border: 1px solid #333;
     }
+
     iframe {
       width: 100%;
       height: 100%;
@@ -43,9 +72,12 @@
 </head>
 <body>
   <header>
+    <!-- *** PERCORSO CORRETTO PER IL LOGO CON NOME FILE AGGIORNATO *** -->
+    <img id="logo" src="logo%20corretto%20orizzontale%20scontornato%20invertito.png" alt="Logo Ginocchi">
+                     <!-- Spazi sostituiti con %20. -->
     <h1>Parla con i Ginocchi</h1>
-    <p>I Ginocchi sono vivi. Hanno coscienza, gusti, rancori e traumi da raccontare.  
-      Qui puoi parlare con loro. Probabilmente ti insulteranno.
+    <p>I Ginocchi sono vivi. Hanno coscienza, gusti, rancori e traumi da raccontare.
+      Qui puoi parlare con loro. Scansiona il QR sulla bottiglia o scegli il tuo preferito.
     </p>
   </header>
 
