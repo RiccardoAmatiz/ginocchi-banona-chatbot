@@ -21,7 +21,7 @@
       /* Variabili per stile scrollbar */
       --scrollbar-bg: #1A1C3A;
       --scrollbar-thumb: #3E4C7A;
-      --scrollbar-thumb-hover: #5E9194; /* Uso accento per hover */
+      --scrollbar-thumb-hover: #5E9194;
     }
 
     html { box-sizing: border-box; }
@@ -50,15 +50,15 @@
 
     .container {
       width: 100%;
-      max-width: 1100px; /* Aumentato leggermente per contenere galleria+chat */
+      max-width: 1100px;
       margin: 0 auto;
       padding: 0 1rem;
     }
 
     header {
       background-color: var(--card-bg-color);
-      padding: 1.5rem 0; /* Ridotto un po' padding per non farla enorme */
-      margin-bottom: 2.5rem; /* Più spazio sotto header */
+      padding: 2rem 0;
+      margin-bottom: 2.5rem;
       border-bottom: 2px solid var(--border-color);
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
     }
@@ -72,34 +72,47 @@
       margin-bottom: 2rem;
     }
 
-    .logo-img-header {
-      max-height: 160px; /* Leggermente ridotto rispetto ai 180 */
+    /* >>> CLASSE COMUNE PER LOGHI PRINCIPALI <<< */
+    .main-logo {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      max-height: 160px;  /* >> Dimensione Unificata e Grande << */
       min-height: 80px;
       width: auto;
       vertical-align: middle;
-      filter: drop-shadow(0 0 5px rgba(94, 145, 148, 0.4)); /* Leggera aura con colore accento */
     }
 
+    /* Stili specifici per posizionamento/effetti */
+    #logo-top {
+       margin-bottom: 1.5rem; /* Spazio sotto nell'header */
+       filter: drop-shadow(0 0 5px rgba(94, 145, 148, 0.4));
+    }
+    #logo-bottom {
+        margin-bottom: 1rem; /* Spazio sotto nel footer */
+        opacity: 0.8;
+    }
+
+
     h1 {
-      font-size: clamp(1.8rem, 5vw, 2.6rem); /* Dimensione H1 responsive */
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
       font-family: 'Rubik', sans-serif;
       color: var(--primary-text-color);
       margin: 0;
       text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-      /* Puoi applicare accento */
-      /* color: var(--accent-color); */
     }
 
+    /* >>> CSS BANNER AGGIORNATO <<< */
     #header-banner {
       display: block;
-      width: 100%;
-      max-width: 750px; /* Leggermente più largo */
-      aspect-ratio: 16 / 6.5; /* Un po' meno alto */
-      object-fit: cover;
-      margin: 0 auto 2rem;
-      border-radius: 10px; /* Arrotondamento aumentato */
+      width: 100%;         /* Occupa la larghezza disponibile */
+      max-width: 750px;   /* Limita la larghezza massima */
+      height: auto;        /* >> Altezza automatica per proporzioni << */
+      margin: 0 auto 2rem; /* Centrato, spazio sotto */
+      border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
       border: 1px solid var(--border-color);
+      /* Rimossi object-fit e aspect-ratio */
     }
 
     header .description {
@@ -115,7 +128,6 @@
        padding-bottom: 3rem;
     }
 
-    /* Sezione Galleria Ginocchi */
     #ginocchi-gallery-section {
       margin-bottom: 2.5rem;
       padding: 1.5rem;
@@ -150,7 +162,6 @@
     }
     #ginocchi-grid {
       display: grid;
-      /* Crea colonne responsive, larghe minimo 80px, max 1fr (stessa larghezza) */
       grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
       gap: 1rem;
       justify-content: center;
@@ -160,27 +171,26 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      cursor: pointer; /* Indica che è cliccabile */
+      cursor: pointer;
       transition: transform 0.2s ease-in-out, filter 0.2s ease;
     }
     .ginocchio-thumbnail:hover {
-      transform: scale(1.1); /* Effetto zoom al hover */
+      transform: scale(1.1);
       filter: brightness(1.2);
     }
     .ginocchio-thumbnail img {
-      width: 70px; /* Larghezza miniatura */
+      width: 70px;
       height: 70px;
-      object-fit: cover; /* Adatta immagine nel box */
-      border-radius: 50%; /* Cerchio */
+      object-fit: cover;
+      border-radius: 50%;
       border: 2px solid var(--accent-color);
       margin-bottom: 0.5rem;
     }
     .ginocchio-thumbnail span {
       font-size: 0.8rem;
       color: var(--secondary-text-color);
-      white-space: nowrap; /* Non va a capo */
+      white-space: nowrap;
     }
-    /* Nasconde elementi per filtro JS */
     .hidden { display: none !important; }
 
     .chat-container {
@@ -211,11 +221,7 @@
       text-align: center;
     }
 
-    .logo-img-footer {
-      max-height: 60px;
-      width: auto;
-      opacity: 0.8; /* Leggera trasparenza logo footer */
-    }
+    /* Rimosso .logo-img-footer che definiva altezza piccola */
 
     footer p {
       font-size: 0.85rem;
@@ -230,10 +236,13 @@
   <header>
     <div class="container">
       <div class="header-content">
-        <img class="logo-img-header" src="logo%20corretto%20orizzontale%20scontornato%20invertito.png" alt="Logo Ginocchi">
+        <!-- Usa la classe comune .main-logo -->
+        <img class="main-logo" id="logo-top" src="logo%20corretto%20orizzontale%20scontornato%20invertito.png" alt="Logo Ginocchi">
         <h1>Ginocchi Official Chat</h1>
       </div>
+
       <img id="header-banner" src="La%20migliore%20modificata%20da%20me%20con%20sfondo.png" alt="Ginocchi Banner">
+
       <div class="description">
         I Ginocchi sono vivi. Hanno coscienza, gusti, rancori e traumi da raccontare. Qui puoi parlare con loro. Probabilmente ti insulteranno.
       </div>
@@ -242,39 +251,22 @@
 
   <div class="main-content container">
 
-    <!-- Nuova Sezione Galleria -->
     <section id="ginocchi-gallery-section">
       <h2>Esplora i Ginocchi</h2>
       <input type="text" id="ginocchio-filter" placeholder="Cerca Ginocchio per nome...">
       <div id="ginocchi-grid">
-        <!-- *** Placeholder Esempio - Dovrai popolare dinamicamente o manualmente *** -->
+        <!-- Popola questa griglia con i tuoi 50 Ginocchi -->
+        <!-- Esempio: -->
         <div class="ginocchio-thumbnail" data-nome="Punturirma">
-          <img src="URL_IMMAGINE_PUNTURIRMA_QUI" alt="Punturirma"> <!-- SOSTITUISCI URL -->
-          <span>Punturirma</span>
+          <img src="URL_PUNTURIRMA" alt="Punturirma"><span>Punturirma</span>
         </div>
-        <div class="ginocchio-thumbnail" data-nome="Roboshop">
-          <img src="URL_IMMAGINE_ROBOSHOP_QUI" alt="Roboshop"> <!-- SOSTITUISCI URL -->
-          <span>Roboshop</span>
+         <div class="ginocchio-thumbnail" data-nome="Roboshop">
+          <img src="URL_ROBOSHOP" alt="Roboshop"><span>Roboshop</span>
         </div>
-        <div class="ginocchio-thumbnail" data-nome="Robinario">
-          <img src="URL_IMMAGINE_ROBINARIO_QUI" alt="Robinario"> <!-- SOSTITUISCI URL -->
-          <span>Robinario</span>
-        </div>
-        <!-- Aggiungi qui tutti gli altri 47 ginocchi -->
-         <div class="ginocchio-thumbnail" data-nome="Peperonbro">
-          <img src="URL_IMMAGINE_PEPERONBRO_QUI" alt="Peperonbro"> <!-- SOSTITUISCI URL -->
-          <span>Peperonbro</span>
-        </div>
-         <div class="ginocchio-thumbnail" data-nome="Fuega">
-          <img src="URL_IMMAGINE_FUEGA_QUI" alt="Fuega"> <!-- SOSTITUISCI URL -->
-          <span>Fuega</span>
-        </div>
-        <!-- ... etc ... -->
-
+        <!-- ... altri ... -->
       </div>
     </section>
 
-    <!-- Contenitore Chat -->
     <div class="chat-container">
       <iframe id="chatbot-iframe" src="https://www.chatbase.co/chatbot-iframe/MQegvtSzp_7SHGSbf1lS8"></iframe>
     </div>
@@ -282,56 +274,48 @@
 
   <footer>
     <div class="container">
-      <img class="logo-img-footer" src="logo%20corretto%20orizzontale%20scontornato%20invertito.png" alt="Logo Ginocchi">
+      <!-- Usa la classe comune .main-logo -->
+      <img class="main-logo" id="logo-bottom" src="logo%20corretto%20orizzontale%20scontornato%20invertito.png" alt="Logo Ginocchi">
       <p>© 2024 Ginocchi. Don't blame us if they hurt your feelings.</p>
     </div>
   </footer>
 
-  <!-- >>> Codice JavaScript per Filtro Galleria <<< -->
   <script>
+    // JavaScript per filtro galleria e alert su click miniatura
     document.addEventListener('DOMContentLoaded', function() {
       const filterInput = document.getElementById('ginocchio-filter');
       const grid = document.getElementById('ginocchi-grid');
       const thumbnails = grid.querySelectorAll('.ginocchio-thumbnail');
-      const chatbotIframe = document.getElementById('chatbot-iframe');
+      const chatbotIframe = document.getElementById('chatbot-iframe'); // Riferimento all'iframe
 
       // Funzione Filtro
-      filterInput.addEventListener('input', function() {
-        const filterText = filterInput.value.toLowerCase().trim();
-        thumbnails.forEach(function(thumb) {
-          const nomeGinocchio = thumb.getAttribute('data-nome').toLowerCase();
-          if (nomeGinocchio.includes(filterText)) {
-            thumb.classList.remove('hidden');
-          } else {
-            thumb.classList.add('hidden');
-          }
+      if (filterInput && grid && thumbnails.length > 0) { // Controlli per evitare errori
+        filterInput.addEventListener('input', function() {
+          const filterText = filterInput.value.toLowerCase().trim();
+          thumbnails.forEach(function(thumb) {
+            const nomeGinocchio = thumb.getAttribute('data-nome').toLowerCase();
+            if (nomeGinocchio.includes(filterText)) {
+              thumb.classList.remove('hidden');
+            } else {
+              thumb.classList.add('hidden');
+            }
+          });
         });
-      });
+      } else {
+         console.warn("Elementi galleria/filtro non trovati, filtro non attivo.");
+      }
 
-      // (Opzionale) Funzione per inviare comando al chatbot al click sulla miniatura
-      // NOTA: Funzionerà solo se Chatbase supporta ricezione via postMessage O se il comando "Parla con X" viene interpretato come input utente standard.
+      // Funzione Click Miniatura (solo alert/scroll)
       thumbnails.forEach(function(thumb) {
         thumb.addEventListener('click', function() {
            const nomeGinocchio = this.getAttribute('data-nome');
-           // Tentativo semplice: invia il comando come se fosse un messaggio utente
-           // Questo potrebbe non funzionare direttamente a seconda di come l'iframe Chatbase processa l'input.
-           const comando = `Parla con ${nomeGinocchio}`;
-           console.log(`Invio tentativo comando: "${comando}"`); // Per debug
-
-           // *** Questo è l'approccio base, MA è probabile che richieda API più avanzate di Chatbase/postMessage ***
-           // if (chatbotIframe && chatbotIframe.contentWindow) {
-           //   // Esempio con postMessage - Sostituire '*' con l'origine di Chatbase se la si conosce per sicurezza
-           //   // chatbotIframe.contentWindow.postMessage({ type: 'comandoChatbase', command: comando }, '*');
-           // }
-
-           // Per ora, informa solo l'utente che deve scriverlo manualmente (più sicuro senza API)
-           alert(`Per parlare con ${nomeGinocchio}, scrivi "!parla ${nomeGinocchio}" o semplicemente "${nomeGinocchio}" nella chat!`);
-           // O puoi far scorrere la pagina fino al chatbox
-           chatbotIframe.scrollIntoView({ behavior: 'smooth', block: 'center' });
-           // Provare a focalizzare l'input chat richiederebbe un accesso cross-origin che di solito è bloccato.
+           alert(`Per parlare con ${nomeGinocchio}, scrivi un comando come "!parla ${nomeGinocchio}" o semplicemente il suo nome nella chat!`);
+           // Scrolla fino al chatbot
+           if (chatbotIframe) {
+               chatbotIframe.scrollIntoView({ behavior: 'smooth', block: 'center' });
+           }
         });
       });
-
     });
   </script>
 
