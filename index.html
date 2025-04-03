@@ -4,13 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ginocchi Official Chat</title>
-  <!-- Import Google Fonts: Rubik e Roboto Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&family=Rubik:wght@700&display=swap" rel="stylesheet">
-
   <style>
-    :root { /* Palette Colori */ --bg-color: #0E1128; --card-bg-color: #0A151A; --primary-text-color: #E4FDE0; --secondary-text-color: #A8D7C7; --accent-color: #5E9194; --border-color: #2D454F; /* Scrollbar */ --scrollbar-bg: #1A1C3A; --scrollbar-thumb: #3E4C7A; --scrollbar-thumb-hover: #5E9194; }
+    :root { /* Palette */ --bg-color: #0E1128; --card-bg-color: #0A151A; --primary-text-color: #E4FDE0; --secondary-text-color: #A8D7C7; --accent-color: #5E9194; --border-color: #2D454F; /* Scrollbar */ --scrollbar-bg: #1A1C3A; --scrollbar-thumb: #3E4C7A; --scrollbar-thumb-hover: #5E9194; }
     html { box-sizing: border-box; } *, *:before, *:after { box-sizing: inherit; }
     body { background-color: var(--bg-color); color: var(--primary-text-color); font-family: 'Roboto Mono', monospace; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; line-height: 1.6; }
     body::-webkit-scrollbar { width: 10px; } body::-webkit-scrollbar-track { background: var(--scrollbar-bg); } body::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 6px; border: 2px solid var(--scrollbar-bg); } body::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover); } html { scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg); scrollbar-width: thin; }
@@ -22,48 +20,69 @@
     h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); font-family: 'Rubik', sans-serif; color: var(--primary-text-color); margin: 0; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6); }
     #header-banner { display: block; width: 100%; max-width: 750px; height: auto; margin: 0 auto 2rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); border: 1px solid var(--border-color); }
     header .description { font-size: 1.1rem; max-width: 700px; margin: 0 auto; color: var(--secondary-text-color); text-align: center; }
-    .main-content { flex: 1; padding-bottom: 3rem; }
+    .main-content { flex: 1; padding-bottom: 3rem; position: relative; /* Serve per posizionare guida */ }
     #ginocchi-gallery-section { margin-bottom: 2.5rem; padding: 1.5rem; background-color: var(--card-bg-color); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); }
     #ginocchi-gallery-section h2 { font-family: 'Rubik', sans-serif; text-align: center; color: var(--accent-color); margin-top: 0; margin-bottom: 1rem; }
     #ginocchio-filter { display: block; width: 100%; max-width: 400px; margin: 0 auto 1.5rem; padding: 0.75rem 1rem; background-color: var(--bg-color); color: var(--primary-text-color); border: 1px solid var(--border-color); border-radius: 6px; font-family: 'Roboto Mono', monospace; font-size: 1rem; } #ginocchio-filter::placeholder { color: var(--secondary-text-color); opacity: 0.7; }
-    #ginocchi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 1rem; justify-content: center; } /* Aumentato minmax leggermente */
-    .ginocchio-thumbnail { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; transition: transform 0.2s ease-in-out, filter 0.2s ease; background-color: rgba(255, 255, 255, 0.03); /* Sfondo leggerissimo */ padding: 0.5rem; border-radius: 8px;}
-    .ginocchio-thumbnail:hover { transform: scale(1.1); filter: brightness(1.2); background-color: rgba(94, 145, 148, 0.2); /* Colore accento al hover */ }
+    #ginocchi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 1rem; justify-content: center; }
+    .ginocchio-thumbnail { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; transition: transform 0.2s ease-in-out, filter 0.2s ease, background-color 0.2s ease; background-color: rgba(255, 255, 255, 0.03); padding: 0.5rem; border-radius: 8px; }
+    .ginocchio-thumbnail:hover { transform: scale(1.1); filter: brightness(1.2); background-color: rgba(94, 145, 148, 0.2); }
     .ginocchio-thumbnail img { width: 70px; height: 70px; object-fit: cover; border-radius: 50%; border: 2px solid var(--accent-color); margin-bottom: 0.5rem; }
-    .ginocchio-thumbnail span { font-size: 0.75rem; /* Leggermente più piccolo */ color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; /* Assicura che ellipsis funzioni */ }
+    .ginocchio-thumbnail span { font-size: 0.75rem; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
     .hidden { display: none !important; }
+    .chat-section { position: relative; /* Posiziona la guida relativa a questa sezione */ }
     .chat-container { background-color: var(--card-bg-color); margin: 0 auto; width: 100%; max-width: 800px; height: 65vh; min-height: 500px; max-height: 700px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6); }
     iframe { width: 100%; height: 100%; border: none; }
+
+    /* >>> Stile per il Messaggio Guida <<< */
+    #command-suggestion {
+        position: absolute; /* Posizionato sopra la chat */
+        bottom: 100%; /* Appena sopra il chat container */
+        left: 50%;
+        transform: translateX(-50%); /* Centrato orizzontalmente */
+        background-color: var(--accent-color);
+        color: var(--bg-color); /* Testo scuro per contrasto */
+        padding: 0.5rem 1rem;
+        border-radius: 6px 6px 0 0; /* Angoli arrotondati solo sopra */
+        font-size: 0.9rem;
+        z-index: 10;
+        opacity: 0; /* Nascosto inizialmente */
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        white-space: nowrap;
+        box-shadow: 0 -2px 5px rgba(0,0,0,0.3);
+    }
+    #command-suggestion.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+    #command-suggestion code { /* Stile per il comando suggerito */
+      background-color: rgba(0,0,0,0.2);
+      padding: 0.1em 0.4em;
+      border-radius: 3px;
+      font-weight: bold;
+    }
+
+
     footer { background-color: var(--card-bg-color); margin-top: auto; padding: 2rem 1rem; border-top: 2px solid var(--border-color); text-align: center; }
     footer p { font-size: 0.85rem; color: var(--secondary-text-color); margin-top: 1rem; opacity: 0.7; }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="container">
-      <div class="header-content">
-        <img class="main-logo" id="logo-top" src="logo%20corretto%20orizzontale%20scontornato%20invertito.png" alt="Logo Ginocchi">
-        <h1>Ginocchi Official Chat</h1>
-      </div>
-      <img id="header-banner" src="La%20migliore%20modificata%20da%20me%20con%20sfondo.png" alt="Ginocchi Banner">
-      <div class="description">
-        I Ginocchi sono vivi. Hanno coscienza, gusti, rancori e traumi da raccontare. Qui puoi parlare con loro. Probabilmente ti insulteranno.
-      </div>
-    </div>
-  </header>
+  <header> <div class="container"> <div class="header-content"> <img class="main-logo" id="logo-top" src="logo%20corretto%20orizzontale%20scontornato%20invertito.png" alt="Logo Ginocchi"> <h1>Ginocchi Official Chat</h1> </div> <img id="header-banner" src="La%20migliore%20modificata%20da%20me%20con%20sfondo.png" alt="Ginocchi Banner"> <div class="description"> I Ginocchi sono vivi. Hanno coscienza, gusti, rancori e traumi da raccontare. Qui puoi parlare con loro. Probabilmente ti insulteranno. </div> </div> </header>
 
   <div class="main-content container">
     <section id="ginocchi-gallery-section">
       <h2>Esplora i Ginocchi</h2>
       <input type="text" id="ginocchio-filter" placeholder="Cerca Ginocchio per nome...">
       <div id="ginocchi-grid">
-        <!-- === Galleria Popolata - Verifica Associazioni/Nomi! === -->
+        <!-- === Galleria Popolata - CORRETTI URL Delfimaru/Callista === -->
         <div class="ginocchio-thumbnail" data-nome="Punturirma"><img src="PUNTURIRMA.jpg" alt="Punturirma"><span>Punturirma</span></div>
         <div class="ginocchio-thumbnail" data-nome="Roboshop"><img src="ROBOSHOP.webp" alt="Roboshop"><span>Roboshop</span></div>
-        <div class="ginocchio-thumbnail" data-nome="Robinario"><img src="ROBERTO%20BINARIO.webp" alt="Robinario"><span>Robinario</span></div> <!-- Associazione Robinario -> ROBERTO BINARIO -->
+        <div class="ginocchio-thumbnail" data-nome="Robinario"><img src="ROBERTO%20BINARIO.webp" alt="Robinario"><span>Robinario</span></div>
         <div class="ginocchio-thumbnail" data-nome="Prepezio"><img src="PREPEZIO.webp" alt="Prepezio"><span>Prepezio</span></div>
-        <div class="ginocchio-thumbnail" data-nome="Gorettore"><img src="GORELIO.webp" alt="Gorettore"><span>Gorettore</span></div> <!-- Associazione Gorettore -> GORELIO -->
+        <div class="ginocchio-thumbnail" data-nome="Gorettore"><img src="GORELIO.webp" alt="Gorettore"><span>Gorettore</span></div>
         <div class="ginocchio-thumbnail" data-nome="Guerraniglio"><img src="GUERRANIGLIO.webp" alt="Guerraniglio"><span>Guerraniglio</span></div>
         <div class="ginocchio-thumbnail" data-nome="Tossicozza"><img src="TOSSICOZZA.webp" alt="Tossicozza"><span>Tossicozza</span></div>
         <div class="ginocchio-thumbnail" data-nome="Scarabarman"><img src="SCARABARMAN%20QUADRATO.jpg" alt="Scarabarman"><span>Scarabarman</span></div>
@@ -80,30 +99,31 @@
         <div class="ginocchio-thumbnail" data-nome="Rosiro"><img src="ROSIRO.webp" alt="Rosiro"><span>Rosiro</span></div>
         <div class="ginocchio-thumbnail" data-nome="Rosella"><img src="ROSELLA.jpg" alt="Rosella"><span>Rosella</span></div>
         <div class="ginocchio-thumbnail" data-nome="Cybermint"><img src="CYBERMINT.webp" alt="Cybermint"><span>Cybermint</span></div>
-        <div class="ginocchio-thumbnail" data-nome="Rosmaruma"><img src="RORMARUMA.webp" alt="Rosmaruma"><span>Rosmaruma</span></div> <!-- Nome file RORMARUMA -->
-        <div class="ginocchio-thumbnail" data-nome="Cetriolana ottava"><img src="CETRIOLANA%20OTTAVA.webp" alt="Cetriolana ottava"><span>Cetriolana 8ª</span></div> <!-- Nome abbreviato span -->
-        <div class="ginocchio-thumbnail" data-nome="Rosmanguilla"><img src="rosmareel2.jpg" alt="Rosmanguilla"><span>Rosmanguilla</span></div> <!-- Associazione Rosmanguilla -> rosmareel2 -->
+        <div class="ginocchio-thumbnail" data-nome="Rosmaruma"><img src="RORMARUMA.webp" alt="Rosmaruma"><span>Rosmaruma</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Cetriolana ottava"><img src="CETRIOLANA%20OTTAVA.webp" alt="Cetriolana ottava"><span>Cetriolana 8ª</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Rosmanguilla"><img src="rosmareel2.jpg" alt="Rosmanguilla"><span>Rosmanguilla</span></div>
         <div class="ginocchio-thumbnail" data-nome="Banona"><img src="BANONA.webp" alt="Banona"><span>Banona</span></div>
-        <div class="ginocchio-thumbnail" data-nome="Tony Ephedrina"><img src="TONY%20ANSIOLITICO.jpg" alt="Tony Ephedrina"><span>Tony E./Ans.</span></div> <!-- Associazione Tony -> TONY ANSIOLITICO / Span abbreviato-->
+        <div class="ginocchio-thumbnail" data-nome="Tony Ephedrina"><img src="TONY%20ANSIOLITICO.jpg" alt="Tony Ephedrina"><span>Tony E./Ans.</span></div>
         <div class="ginocchio-thumbnail" data-nome="Cervarancio"><img src="CERVARANCIO.webp" alt="Cervarancio"><span>Cervarancio</span></div>
         <div class="ginocchio-thumbnail" data-nome="Merlotta"><img src="MERLOTTA%20quadrata.jpg" alt="Merlotta"><span>Merlotta</span></div>
         <div class="ginocchio-thumbnail" data-nome="Corvananas"><img src="CORVANANAS.webp" alt="Corvananas"><span>Corvananas</span></div>
         <div class="ginocchio-thumbnail" data-nome="Fiammaciofo"><img src="FIAMMACIOFO.webp" alt="Fiammaciofo"><span>Fiammaciofo</span></div>
-        <div class="ginocchio-thumbnail" data-nome="Rosa cagnolina"><img src="ROSA%20CAGNOLINA.webp" alt="Rosa cagnolina"><span>R. Cagnolina</span></div> <!-- Span abbreviato -->
-        <div class="ginocchio-thumbnail" data-nome="Pipimone"><img src="LIMONSTRELLO.webp" alt="Pipimone"><span>Pipimone</span></div> <!-- Associazione Pipimone -> LIMONSTRELLO (VERIFICA!) -->
+        <div class="ginocchio-thumbnail" data-nome="Rosa cagnolina"><img src="ROSA%20CAGNOLINA.webp" alt="Rosa cagnolina"><span>R. Cagnolina</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Pipimone"><img src="LIMONSTRELLO.webp" alt="Pipimone"><span>Pipimone</span></div>
         <div class="ginocchio-thumbnail" data-nome="Eremillo"><img src="EREMILLO.webp" alt="Eremillo"><span>Eremillo</span></div>
         <div class="ginocchio-thumbnail" data-nome="Mangodillo"><img src="MANGODILLO.webp" alt="Mangodillo"><span>Mangodillo</span></div>
-        <div class="ginocchio-thumbnail" data-nome="Lampolpo"><img src="Octoberries.jpg" alt="Lampolpo"><span>Lampolpo</span></div> <!-- Associazione Lampolpo -> Octoberries (VERIFICA!) -->
-        <div class="ginocchio-thumbnail" data-nome="Delfimaru"><img src="DELFIMaru%20QUADRATO.jpg" alt="Delfimaru"><span>Delfimaru</span></div> <!-- Corretto Case Ma -->
+        <div class="ginocchio-thumbnail" data-nome="Lampolpo"><img src="Octoberries.jpg" alt="Lampolpo"><span>Lampolpo</span></div>
+         <!-- *** NOMI FILE CORRETTI PER DELFIMARU E CALLISTA *** -->
+        <div class="ginocchio-thumbnail" data-nome="Delfimaru"><img src="Delfimaru%20QUADRATO.jpg" alt="Delfimaru"><span>Delfimaru</span></div>
         <div class="ginocchio-thumbnail" data-nome="Pignacano"><img src="PIGNACANO.webp" alt="Pignacano"><span>Pignacano</span></div>
         <div class="ginocchio-thumbnail" data-nome="Pompecora"><img src="POMPECORA.webp" alt="Pompecora"><span>Pompecora</span></div>
         <div class="ginocchio-thumbnail" data-nome="Winenot?"><img src="WINENOT.webp" alt="Winenot?"><span>Winenot?</span></div>
-        <div class="ginocchio-thumbnail" data-nome="Callista"><img src="CALLISTA%20QUADRATA.png" alt="Callista"><span>Callista</span></div> <!-- Estensione png minuscola -->
+        <div class="ginocchio-thumbnail" data-nome="Callista"><img src="CALLISTA%20QUADRATA.png" alt="Callista"><span>Callista</span></div>
         <div class="ginocchio-thumbnail" data-nome="Cannellorca"><img src="CANNELLORCA.webp" alt="Cannellorca"><span>Cannellorca</span></div>
         <div class="ginocchio-thumbnail" data-nome="Anicinzia"><img src="ANICINZIA.webp" alt="Anicinzia"><span>Anicinzia</span></div>
         <div class="ginocchio-thumbnail" data-nome="Fumello"><img src="FUMELLO.jpg" alt="Fumello"><span>Fumello</span></div>
         <div class="ginocchio-thumbnail" data-nome="Peperonbro"><img src="PEPERONBRO.webp" alt="Peperonbro"><span>Peperonbro</span></div>
-        <div class="ginocchio-thumbnail" data-nome="Blobaffè"><img src="BLOBAFF%C3%A8.webp" alt="Blobaffè"><span>Blobaffè</span></div> <!-- Nome file con encoding è -->
+        <div class="ginocchio-thumbnail" data-nome="Blobaffè"><img src="BLOBAFF%C3%A8.webp" alt="Blobaffè"><span>Blobaffè</span></div>
         <div class="ginocchio-thumbnail" data-nome="Speziatopo"><img src="speziatopo.jpg" alt="Speziatopo"><span>Speziatopo</span></div>
         <div class="ginocchio-thumbnail" data-nome="Borghesiglio"><img src="BORGHESIGLIO.jpg" alt="Borghesiglio"><span>Borghesiglio</span></div>
         <div class="ginocchio-thumbnail" data-nome="Teabear"><img src="TEABEAR.webp" alt="Teabear"><span>Teabear</span></div>
@@ -112,10 +132,14 @@
       </div>
     </section>
 
-    <div class="chat-container">
-      <iframe id="chatbot-iframe" src="https://www.chatbase.co/chatbot-iframe/MQegvtSzp_7SHGSbf1lS8"></iframe>
+    <!-- Sezione Chat con guida comando -->
+    <div class="chat-section">
+      <div id="command-suggestion"></div> <!-- Div per mostrare la guida -->
+      <div class="chat-container">
+        <iframe id="chatbot-iframe" src="https://www.chatbase.co/chatbot-iframe/MQegvtSzp_7SHGSbf1lS8"></iframe>
+      </div>
     </div>
-  </div>
+  </div> <!-- Fine .main-content .container -->
 
   <footer>
     <div class="container">
@@ -128,9 +152,12 @@
     document.addEventListener('DOMContentLoaded', function() {
       const filterInput = document.getElementById('ginocchio-filter');
       const grid = document.getElementById('ginocchi-grid');
-      if (!filterInput || !grid) return; // Esce se non trova elementi filtro/griglia
+      const commandSuggestion = document.getElementById('command-suggestion'); // Riferimento alla guida
+      if (!filterInput || !grid || !commandSuggestion) return;
+
       const thumbnails = grid.querySelectorAll('.ginocchio-thumbnail');
       const chatbotIframe = document.getElementById('chatbot-iframe');
+      let suggestionTimeout; // Per far scomparire il messaggio guida
 
       // Funzione Filtro
       if (thumbnails.length > 0) {
@@ -138,28 +165,55 @@
           const filterText = filterInput.value.toLowerCase().trim();
           thumbnails.forEach(function(thumb) {
             const nomeGinocchio = thumb.getAttribute('data-nome').toLowerCase();
-            if (nomeGinocchio.includes(filterText)) {
-              thumb.classList.remove('hidden');
-            } else {
-              thumb.classList.add('hidden');
-            }
+            thumb.classList.toggle('hidden', !nomeGinocchio.includes(filterText));
           });
         });
 
-        // Funzione Click Miniatura (alert/scroll)
+        // >>> Funzione Click Miniatura AGGIORNATA <<<
         thumbnails.forEach(function(thumb) {
           thumb.addEventListener('click', function() {
-             const nomeGinocchio = this.getAttribute('data-nome');
-             // Messaggio di istruzione leggermente migliorato
-             alert(`Ottima scelta! Per iniziare a parlare con ${nomeGinocchio}, scrivi "!parla ${nomeGinocchio}" (o solo il suo nome) direttamente nella finestra della chat qui sotto.`);
-             if (chatbotIframe) {
-                 chatbotIframe.scrollIntoView({ behavior: 'smooth', block: 'center' });
-             }
+            const nomeGinocchio = this.getAttribute('data-nome');
+            const comando = `Parla con ${nomeGinocchio}`; // Potresti anche usare solo nomeGinocchio
+
+            // 1. Copia negli appunti (se API disponibile)
+            if (navigator.clipboard) {
+              navigator.clipboard.writeText(comando).then(() => {
+                // 2. Mostra il messaggio guida
+                commandSuggestion.innerHTML = `Comando <code>${comando}</code> copiato! Incolla nella chat.`; // Usa innerHTML per <code>
+                commandSuggestion.classList.add('visible');
+
+                // 3. Nascondi dopo qualche secondo
+                clearTimeout(suggestionTimeout); // Resetta timer precedente
+                suggestionTimeout = setTimeout(() => {
+                  commandSuggestion.classList.remove('visible');
+                }, 4000); // Messaggio visibile per 4 secondi
+              }).catch(err => {
+                // Se la copia fallisce, mostra messaggio alternativo
+                commandSuggestion.innerHTML = `Scrivi <code>${comando}</code> nella chat qui sotto!`;
+                commandSuggestion.classList.add('visible');
+                clearTimeout(suggestionTimeout);
+                 suggestionTimeout = setTimeout(() => {
+                  commandSuggestion.classList.remove('visible');
+                }, 4000);
+                console.error('Errore copia comando:', err);
+              });
+            } else {
+              // Fallback se clipboard API non è supportata
+              commandSuggestion.innerHTML = `Scrivi <code>${comando}</code> nella chat qui sotto!`;
+              commandSuggestion.classList.add('visible');
+              clearTimeout(suggestionTimeout);
+               suggestionTimeout = setTimeout(() => {
+                  commandSuggestion.classList.remove('visible');
+              }, 4000);
+            }
+
+            // 4. Scrolla fino al chatbot
+            if (chatbotIframe) {
+                chatbotIframe.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
           });
         });
-      } else {
-          console.warn("Nessuna miniatura Ginocchio trovata nella griglia.");
-      }
+      } else { console.warn("Nessuna miniatura Ginocchio trovata."); }
     });
   </script>
 
