@@ -1,107 +1,120 @@
-// Dentro lo script alla fine del body
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ginocchi Official Chat</title>
+  <!-- Import Google Fonts: Rubik e Roboto Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&family=Rubik:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root { /* Palette */ --bg-color: #0E1128; --card-bg-color: #0A151A; --primary-text-color: #E4FDE0; --secondary-text-color: #A8D7C7; --accent-color: #5E9194; --border-color: #2D454F; /* Scrollbar */ --scrollbar-bg: #1A1C3A; --scrollbar-thumb: #3E4C7A; --scrollbar-thumb-hover: #5E9194; }
+    html { box-sizing: border-box; } *, *:before, *:after { box-sizing: inherit; }
+    body { background-color: var(--bg-color); color: var(--primary-text-color); font-family: 'Roboto Mono', monospace; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; line-height: 1.6; }
+    body::-webkit-scrollbar { width: 10px; } body::-webkit-scrollbar-track { background: var(--scrollbar-bg); } body::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 6px; border: 2px solid var(--scrollbar-bg); } body::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover); } html { scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg); scrollbar-width: thin; }
+    .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+    header { background-color: var(--card-bg-color); padding: 2rem 0; margin-bottom: 2.5rem; border-bottom: 2px solid var(--border-color); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4); }
+    .header-content { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2rem; }
+    .main-logo { display: block; margin-left: auto; margin-right: auto; max-height: 160px; min-height: 80px; width: auto; vertical-align: middle; }
+    #logo-top { margin-bottom: 1.5rem; filter: drop-shadow(0 0 5px rgba(94, 145, 148, 0.4)); } #logo-bottom { margin-bottom: 1rem; opacity: 0.8; }
+    h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); font-family: 'Rubik', sans-serif; color: var(--primary-text-color); margin: 0; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6); }
+    #header-banner { display: block; width: 100%; max-width: 750px; height: auto; margin: 0 auto 2rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); border: 1px solid var(--border-color); }
+    header .description { font-size: 1.1rem; max-width: 700px; margin: 0 auto; color: var(--secondary-text-color); text-align: center; }
+    .main-content { flex: 1; padding-bottom: 3rem; position: relative; }
+    #ginocchi-gallery-section { margin-bottom: 2.5rem; padding: 1.5rem; background-color: var(--card-bg-color); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); }
+    #ginocchi-gallery-section h2 { font-family: 'Rubik', sans-serif; text-align: center; color: var(--accent-color); margin-top: 0; margin-bottom: 1rem; }
+    #category-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .filter-btn { padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); background-color: var(--card-bg-color); color: var(--secondary-text-color); cursor: pointer; border-radius: 20px; font-family: 'Roboto Mono', monospace; font-size: 0.9rem; transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
+    .filter-btn:hover { background-color: rgba(94, 145, 148, 0.2); color: var(--primary-text-color); border-color: var(--accent-color); }
+    .filter-btn.active { background-color: var(--accent-color); color: var(--bg-color); border-color: var(--accent-color); font-weight: bold; }
+    #ginocchio-filter { display: block; width: 100%; max-width: 400px; margin: 0 auto 1.5rem; padding: 0.75rem 1rem; background-color: var(--bg-color); color: var(--primary-text-color); border: 1px solid var(--border-color); border-radius: 6px; font-family: 'Roboto Mono', monospace; font-size: 1rem; } #ginocchio-filter::placeholder { color: var(--secondary-text-color); opacity: 0.7; }
+    #ginocchi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 1rem; justify-content: center; }
+    .ginocchio-thumbnail { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; transition: transform 0.2s ease-in-out, filter 0.2s ease, background-color 0.2s ease; background-color: rgba(255, 255, 255, 0.03); padding: 0.5rem; border-radius: 8px; }
+    .ginocchio-thumbnail:hover { transform: scale(1.1); filter: brightness(1.2); background-color: rgba(94, 145, 148, 0.2); }
+    .ginocchio-thumbnail img { width: 70px; height: 70px; object-fit: cover; border-radius: 50%; border: 2px solid var(--accent-color); margin-bottom: 0.5rem; }
+    .ginocchio-thumbnail span { font-size: 0.75rem; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+    .hidden-by-category, .hidden-by-name { display: none !important; }
+    .chat-section { position: relative; }
+    .chat-container { background-color: var(--card-bg-color); margin: 0 auto; width: 100%; max-width: 800px; height: 65vh; min-height: 500px; max-height: 700px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6); }
+    iframe { width: 100%; height: 100%; border: none; }
+    #command-suggestion { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background-color: var(--accent-color); color: var(--bg-color); padding: 0.5rem 1rem; border-radius: 6px 6px 0 0; font-size: 0.9rem; z-index: 10; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; white-space: nowrap; box-shadow: 0 -2px 5px rgba(0,0,0,0.3); }
+    #command-suggestion.visible { opacity: 1; visibility: visible; } #command-suggestion code { background-color: rgba(0,0,0,0.2); padding: 0.1em 0.4em; border-radius: 3px; font-weight: bold; }
+    footer { background-color: var(--card-bg-color); margin-top: auto; padding: 2rem 1rem; border-top: 2px solid var(--border-color); text-align: center; } footer p { font-size: 0.85rem; color: var(--secondary-text-color); margin-top: 1rem; opacity: 0.7; }
+  </style>
+</head>
+<body>
 
-document.addEventListener('DOMContentLoaded', function() {
-  const filterInput = document.getElementById('ginocchio-filter');
-  const grid = document.getElementById('ginocchi-grid');
-  const categoryButtons = document.querySelectorAll('#category-filters .filter-btn');
-  const commandSuggestion = document.getElementById('command-suggestion');
+  <header>
+    <div class="container"> <div class="header-content"> <img class="main-logo" id="logo-top" src="logo%20corretto%20orizzontale%20scontornato%20invertito.png" alt="Logo Ginocchi"> <h1>Ginocchi Official Chat</h1> </div> <img id="header-banner" src="La%20migliore%20modificata%20da%20me%20con%20sfondo.png" alt="Ginocchi Banner"> <div class="description"> I Ginocchi sono vivi. Hanno coscienza, gusti, rancori e traumi da raccontare. Qui puoi parlare con loro. Probabilmente ti insulteranno. </div> </div>
+  </header>
 
-  // Verifica iniziale degli elementi
-  if (!filterInput || !grid || !categoryButtons.length || !commandSuggestion) {
-    console.error("Elementi essenziali per filtri/galleria mancanti.");
-    return; // Esce se manca qualcosa
-  }
+  <div class="main-content container">
+    <section id="ginocchi-gallery-section">
+      <h2>Esplora i Ginocchi</h2>
+      <div id="category-filters"> <button class="filter-btn active" data-categoria="tutti">Mostra Tutti</button> <button class="filter-btn" data-categoria="Fruttato">Fruttato</button> <button class="filter-btn" data-categoria="Erbaceo">Erbaceo</button> <button class="filter-btn" data-categoria="Speziato">Speziato</button> <button class="filter-btn" data-categoria="Bilanciato">Bilanciato</button> </div>
+      <input type="text" id="ginocchio-filter" placeholder="Cerca Ginocchio per nome nella categoria selezionata...">
+      <div id="ginocchi-grid">
+        <!-- === Galleria Popolata con Categorie REALI === -->
+        <div class="ginocchio-thumbnail" data-nome="Punturirma" data-categoria="Bilanciato"><img src="PUNTURIRMA.jpg" alt="Punturirma"><span>Punturirma</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Roboshop" data-categoria="Bilanciato"><img src="ROBOSHOP.webp" alt="Roboshop"><span>Roboshop</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Robinario" data-categoria="Bilanciato"><img src="ROBERTO%20BINARIO.webp" alt="Robinario"><span>Robinario</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Prepezio" data-categoria="Bilanciato"><img src="PREPEZIO.webp" alt="Prepezio"><span>Prepezio</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Gorettore" data-categoria="Bilanciato"><img src="GORELIO.webp" alt="Gorettore"><span>Gorettore</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Guerraniglio" data-categoria="Bilanciato"><img src="GUERRANIGLIO.webp" alt="Guerraniglio"><span>Guerraniglio</span></div> <!-- Categoria era B -->
+        <div class="ginocchio-thumbnail" data-nome="Tossicozza" data-categoria="Bilanciato"><img src="TOSSICOZZA.webp" alt="Tossicozza"><span>Tossicozza</span></div> <!-- Categoria era C -->
+        <div class="ginocchio-thumbnail" data-nome="Scarabarman" data-categoria="Bilanciato"><img src="SCARABARMAN%20QUADRATO.jpg" alt="Scarabarman"><span>Scarabarman</span></div> <!-- Categoria era D -->
+        <div class="ginocchio-thumbnail" data-nome="Sborniadrago" data-categoria="Bilanciato"><img src="SBORNIADRAGO.webp" alt="Sborniadrago"><span>Sborniadrago</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Tigrallo" data-categoria="Bilanciato"><img src="TIGRALLO.webp" alt="Tigrallo"><span>Tigrallo</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Roboraffa" data-categoria="Bilanciato"><img src="Roboraffa.jpg" alt="Roboraffa"><span>Roboraffa</span></div> <!-- Categoria era C -->
+        <div class="ginocchio-thumbnail" data-nome="Florona" data-categoria="Erbaceo"><img src="Florona%20QUADRATA.jpg" alt="Florona"><span>Florona</span></div> <!-- Categoria era D -> Corretto Erbaceo -->
+        <div class="ginocchio-thumbnail" data-nome="Ran-occhio" data-categoria="Erbaceo"><img src="RAN-OCCHIO.webp" alt="Ran-occhio"><span>Ran-occhio</span></div> <!-- Categoria era A -> Corretto Erbaceo -->
+        <div class="ginocchio-thumbnail" data-nome="Arundizilla" data-categoria="Erbaceo"><img src="ARUNDIZILLA.webp" alt="Arundizilla"><span>Arundizilla</span></div> <!-- Categoria era B -> Corretto Erbaceo -->
+        <div class="ginocchio-thumbnail" data-nome="Gelsosauro" data-categoria="Erbaceo"><img src="GELSOSAURO.webp" alt="Gelsosauro"><span>Gelsosauro</span></div> <!-- Categoria era C -> Corretto Erbaceo -->
+        <div class="ginocchio-thumbnail" data-nome="Lavandasma" data-categoria="Erbaceo"><img src="LAVANDASMA.webp" alt="Lavandasma"><span>Lavandasma</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Salviananda" data-categoria="Erbaceo"><img src="salviananda.webp" alt="Salviananda"><span>Salviananda</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Koajhonny" data-categoria="Erbaceo"><img src="KOAJHONNY.webp" alt="Koajhonny"><span>Koajhonny</span></div> <!-- Categoria era B -> Corretto Erbaceo -->
+        <div class="ginocchio-thumbnail" data-nome="Rosiro" data-categoria="Erbaceo"><img src="ROSIRO.webp" alt="Rosiro"><span>Rosiro</span></div> <!-- Categoria era C -> Corretto Erbaceo -->
+        <div class="ginocchio-thumbnail" data-nome="Rosella" data-categoria="Erbaceo"><img src="ROSELLA.jpg" alt="Rosella"><span>Rosella</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Cybermint" data-categoria="Erbaceo"><img src="CYBERMINT.webp" alt="Cybermint"><span>Cybermint</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Rosmaruma" data-categoria="Erbaceo"><img src="RORMARUMA.webp" alt="Rosmaruma"><span>Rosmaruma</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Cetriolana ottava" data-categoria="Erbaceo"><img src="CETRIOLANA%20OTTAVA.webp" alt="Cetriolana ottava"><span>Cetriolana 8ª</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Rosmanguilla" data-categoria="Erbaceo"><img src="rosmareel2.jpg" alt="Rosmanguilla"><span>Rosmanguilla</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Banona" data-categoria="Fruttato"><img src="BANONA.webp" alt="Banona"><span>Banona</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Tony Ephedrina" data-categoria="Fruttato"><img src="TONY%20ANSIOLITICO.jpg" alt="Tony Ephedrina"><span>Tony E./Ans.</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Cervarancio" data-categoria="Fruttato"><img src="CERVARANCIO.webp" alt="Cervarancio"><span>Cervarancio</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Merlotta" data-categoria="Fruttato"><img src="MERLOTTA%20quadrata.jpg" alt="Merlotta"><span>Merlotta</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Corvananas" data-categoria="Fruttato"><img src="CORVANANAS.webp" alt="Corvananas"><span>Corvananas</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Fiammaciofo" data-categoria="Fruttato"><img src="FIAMMACIOFO.webp" alt="Fiammaciofo"><span>Fiammaciofo</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Rosa cagnolina" data-categoria="Fruttato"><img src="ROSA%20CAGNOLINA.webp" alt="Rosa cagnolina"><span>R. Cagnolina</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Pipimone" data-categoria="Fruttato"><img src="LIMONSTRELLO.webp" alt="Pipimone"><span>Pipimone</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Eremillo" data-categoria="Fruttato"><img src="EREMILLO.webp" alt="Eremillo"><span>Eremillo</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Mangodillo" data-categoria="Fruttato"><img src="MANGODILLO.webp" alt="Mangodillo"><span>Mangodillo</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Lampolpo" data-categoria="Fruttato"><img src="Octoberries.jpg" alt="Lampolpo"><span>Lampolpo</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Delfimaru" data-categoria="Fruttato"><img src="DELFIMARU%20QUADRATO.jpg" alt="Delfimaru"><span>Delfimaru</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Pignacano" data-categoria="Fruttato"><img src="PIGNACANO.webp" alt="Pignacano"><span>Pignacano</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Pompecora" data-categoria="Fruttato"><img src="POMPECORA.webp" alt="Pompecora"><span>Pompecora</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Winenot?" data-categoria="Fruttato"><img src="WINENOT.webp" alt="Winenot?"><span>Winenot?</span></div> <!-- Categoria era C -->
+        <div class="ginocchio-thumbnail" data-nome="Callista" data-categoria="Speziato"><img src="CALLISTA%20QUADRATA.PNG" alt="Callista"><span>Callista</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Cannellorca" data-categoria="Speziato"><img src="CANNELLORCA.webp" alt="Cannellorca"><span>Cannellorca</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Anicinzia" data-categoria="Speziato"><img src="ANICINZIA.webp" alt="Anicinzia"><span>Anicinzia</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Fumello" data-categoria="Speziato"><img src="FUMELLO.jpg" alt="Fumello"><span>Fumello</span></div> <!-- Categoria era C -->
+        <div class="ginocchio-thumbnail" data-nome="Peperonbro" data-categoria="Speziato"><img src="PEPERONBRO.webp" alt="Peperonbro"><span>Peperonbro</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Blobaffè" data-categoria="Speziato"><img src="BLOBAFF%C3%A8.webp" alt="Blobaffè"><span>Blobaffè</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Speziatopo" data-categoria="Speziato"><img src="speziatopo.jpg" alt="Speziatopo"><span>Speziatopo</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Borghesiglio" data-categoria="Speziato"><img src="BORGHESIGLIO.jpg" alt="Borghesiglio"><span>Borghesiglio</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Teabear" data-categoria="Speziato"><img src="TEABEAR.webp" alt="Teabear"><span>Teabear</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Tzatzikeye" data-categoria="Speziato"><img src="TZATZIKEYE.webp" alt="Tzatzikeye"><span>Tzatzikeye</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Fuega" data-categoria="Speziato"><img src="FUEGA%20quadrata.jpg" alt="Fuega"><span>Fuega</span></div>
+      </div>
+    </section>
 
-  const thumbnails = grid.querySelectorAll('.ginocchio-thumbnail');
-  const chatbotIframe = document.getElementById('chatbot-iframe');
-  let suggestionTimeout;
-  let activeCategory = 'tutti'; // Memorizza categoria attiva
+    <div class="chat-section"> <div id="command-suggestion"></div> <div class="chat-container"> <iframe id="chatbot-iframe" src="https://www.chatbase.co/chatbot-iframe/MQegvtSzp_7SHGSbf1lS8"></iframe> </div> </div>
+  </div>
 
-  // --- Funzione Filtro Categoria ---
-  categoryButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      // Aggiorna stato bottone attivo
-      categoryButtons.forEach(btn => btn.classList.remove('active'));
-      this.classList.add('active');
+  <footer> <div class="container"> <img class="main-logo" id="logo-bottom" src="logo%20corretto%20orizzontale%20scontornato%20invertito.png" alt="Logo Ginocchi"> <p>© 2024 Ginocchi. Don't blame us if they hurt your feelings.</p> </div> </footer>
 
-      activeCategory = this.getAttribute('data-categoria');
+  <script> document.addEventListener('DOMContentLoaded', function() { const filterInput = document.getElementById('ginocchio-filter'); const grid = document.getElementById('ginocchi-grid'); const categoryButtons = document.querySelectorAll('#category-filters .filter-btn'); const commandSuggestion = document.getElementById('command-suggestion'); if (!filterInput || !grid || !categoryButtons.length || !commandSuggestion) { console.error("Elementi essenziali per filtri/galleria mancanti."); return; } const thumbnails = grid.querySelectorAll('.ginocchio-thumbnail'); const chatbotIframe = document.getElementById('chatbot-iframe'); let suggestionTimeout; let activeCategory = 'tutti'; categoryButtons.forEach(button => { button.addEventListener('click', function() { categoryButtons.forEach(btn => btn.classList.remove('active')); this.classList.add('active'); activeCategory = this.getAttribute('data-categoria'); filterInput.value = ''; applyFilters(); }); }); filterInput.addEventListener('input', function() { applyFilters(); }); function applyFilters() { const nameFilterText = filterInput.value.toLowerCase().trim(); thumbnails.forEach(function(thumb) { const nomeGinocchio = thumb.getAttribute('data-nome').toLowerCase(); const categoriaGinocchio = thumb.getAttribute('data-categoria'); const isInActiveCategory = (activeCategory === 'tutti' || categoriaGinocchio === activeCategory); const matchesName = nomeGinocchio.includes(nameFilterText); const shouldBeHidden = !(isInActiveCategory && matchesName); thumb.classList.toggle('hidden-by-category', !isInActiveCategory && shouldBeHidden); thumb.classList.toggle('hidden-by-name', isInActiveCategory && !matchesName && shouldBeHidden); /* Rimuovi la classe se non è più nascosto da quella condizione */ if(!shouldBeHidden){ thumb.classList.remove('hidden-by-category', 'hidden-by-name'); } }); } thumbnails.forEach(function(thumb) { thumb.addEventListener('click', function() { if(this.classList.contains('hidden-by-category') || this.classList.contains('hidden-by-name')) { return; } const nomeGinocchio = this.getAttribute('data-nome'); const comando = `Parla con ${nomeGinocchio}`; if (navigator.clipboard) { navigator.clipboard.writeText(comando).then(() => { commandSuggestion.innerHTML = `Comando <code>${comando}</code> copiato! Incolla nella chat.`; commandSuggestion.classList.add('visible'); clearTimeout(suggestionTimeout); suggestionTimeout = setTimeout(() => { commandSuggestion.classList.remove('visible'); }, 4000); }).catch(err => { commandSuggestion.innerHTML = `Scrivi <code>${comando}</code> nella chat!`; commandSuggestion.classList.add('visible'); clearTimeout(suggestionTimeout); suggestionTimeout = setTimeout(() => { commandSuggestion.classList.remove('visible'); }, 4000); console.error('Errore copia:', err); }); } else { commandSuggestion.innerHTML = `Scrivi <code>${comando}</code> nella chat!`; commandSuggestion.classList.add('visible'); clearTimeout(suggestionTimeout); suggestionTimeout = setTimeout(() => { commandSuggestion.classList.remove('visible'); }, 4000); } if (chatbotIframe) { chatbotIframe.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }); }); applyFilters(); }); </script>
 
-      // Applica filtro categoria E resetta filtro nome
-      filterInput.value = ''; // Pulisce la ricerca per nome
-      applyFilters();
-    });
-  });
-
-  // --- Funzione Filtro Nome ---
-  filterInput.addEventListener('input', function() {
-    applyFilters(); // Applica entrambi i filtri quando si digita
-  });
-
-  // --- Funzione Combinata per Applicare Filtri ---
-  function applyFilters() {
-      const nameFilterText = filterInput.value.toLowerCase().trim();
-
-      thumbnails.forEach(function(thumb) {
-          const nomeGinocchio = thumb.getAttribute('data-nome').toLowerCase();
-          const categoriaGinocchio = thumb.getAttribute('data-categoria');
-
-          // 1. Controllo Categoria
-          const isInActiveCategory = (activeCategory === 'tutti' || categoriaGinocchio === activeCategory);
-
-          // 2. Controllo Nome (solo se categoria corrisponde)
-          const matchesName = nomeGinocchio.includes(nameFilterText);
-
-          // Mostra solo se appartiene alla categoria attiva E corrisponde al filtro nome
-          if (isInActiveCategory && matchesName) {
-              // Usiamo classi separate per evitare conflitti
-              thumb.classList.remove('hidden-by-category', 'hidden-by-name');
-          } else {
-              // Nasconde se non è nella categoria o non corrisponde al nome
-              if (!isInActiveCategory) {
-                thumb.classList.add('hidden-by-category');
-                thumb.classList.remove('hidden-by-name'); // Rimuovi l'altra classe se nascosto per categoria
-              } else { // Se è nella categoria ma non matcha il nome
-                thumb.classList.remove('hidden-by-category');
-                thumb.classList.add('hidden-by-name');
-              }
-          }
-      });
-  }
-
-  // --- Funzione Click Miniatura (Invariata nella logica base) ---
-  thumbnails.forEach(function(thumb) {
-    thumb.addEventListener('click', function() {
-      if(this.classList.contains('hidden-by-category') || this.classList.contains('hidden-by-name')) {
-        return; // Non fare nulla se l'elemento è nascosto dai filtri
-      }
-      const nomeGinocchio = this.getAttribute('data-nome');
-      const comando = `Parla con ${nomeGinocchio}`;
-
-      // Copia e mostra guida (come prima)
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(comando).then(() => {
-          commandSuggestion.innerHTML = `Comando <code>${comando}</code> copiato! Incolla nella chat.`;
-          commandSuggestion.classList.add('visible');
-          clearTimeout(suggestionTimeout);
-          suggestionTimeout = setTimeout(() => { commandSuggestion.classList.remove('visible'); }, 4000);
-        }).catch(err => {
-          commandSuggestion.innerHTML = `Scrivi <code>${comando}</code> nella chat!`;
-          commandSuggestion.classList.add('visible');
-          clearTimeout(suggestionTimeout); suggestionTimeout = setTimeout(() => { commandSuggestion.classList.remove('visible'); }, 4000);
-          console.error('Errore copia:', err);
-        });
-      } else {
-         commandSuggestion.innerHTML = `Scrivi <code>${comando}</code> nella chat!`;
-         commandSuggestion.classList.add('visible');
-         clearTimeout(suggestionTimeout); suggestionTimeout = setTimeout(() => { commandSuggestion.classList.remove('visible'); }, 4000);
-      }
-      // Scroll
-      if (chatbotIframe) { chatbotIframe.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-    });
-  });
-
-  // Applica filtro iniziale (mostra tutti)
-  applyFilters();
-
-});
-</script>
+</body>
+</html>
