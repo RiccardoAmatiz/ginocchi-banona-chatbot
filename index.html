@@ -48,7 +48,63 @@
         window.chatbase=new Proxy(window.chatbase,{
           get(target,prop){
             if(prop==="q"){return target.q}
-            return(...args)=>target(prop,...args)
+            return(...args)=>target(pr<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat con i Ginocchi</title>
+  <style>
+    body {
+      background-color: #0e0e0e;
+      color: #f0f0f0;
+      font-family: 'Rubik', sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    header {
+      background-color: #1e1e1e;
+      padding: 1rem;
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin: 0.5rem;
+    }
+    p {
+      font-size: 1.1rem;
+      margin: 0.5rem auto 1.5rem;
+      max-width: 700px;
+    }
+    .chat-container {
+      margin: 2rem auto;
+      width: 100%;
+      max-width: 800px;
+      height: 600px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Parla con i Ginocchi</h1>
+    <p>I Ginocchi sono vivi. Hanno coscienza, gusti, rancori e traumi da raccontare.  
+      Qui puoi parlare con loro. Scansiona il QR sulla bottiglia o scegli il tuo preferito.
+    </p>
+  </header>
+
+  <div class="chat-container">
+    <iframe src="https://www.chatbase.co/chatbot-iframe/MQegvtSzp_7SHGSbf1lS8"></iframe>
+  </div>
+</body>
+</html>
+op,...args)
           }
         })
       }
