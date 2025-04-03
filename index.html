@@ -8,8 +8,31 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&family=Rubik:wght@700&display=swap" rel="stylesheet">
+
   <style>
-    :root { /* Palette */ --bg-color: #0E1128; --card-bg-color: #0A151A; --primary-text-color: #E4FDE0; --secondary-text-color: #A8D7C7; --accent-color: #5E9194; --border-color: #2D454F; /* Scrollbar */ --scrollbar-bg: #1A1C3A; --scrollbar-thumb: #3E4C7A; --scrollbar-thumb-hover: #5E9194; }
+    :root {
+      /* Palette Colori */
+      --bg-color: #0E1128;
+      --card-bg-color: #0A151A;
+      --primary-text-color: #E4FDE0;
+      --secondary-text-color: #A8D7C7;
+      --accent-color: #5E9194; /* Colore Accento Principale (Teal) */
+      --border-color: #2D454F;
+      /* Scrollbar */
+      --scrollbar-bg: #1A1C3A;
+      --scrollbar-thumb: #3E4C7A;
+      --scrollbar-thumb-hover: #5E9194;
+      /* Colori Categorie */
+      --categoria-bilanciato-bg: #E6D440; /* Giallo ocra */
+      --categoria-bilanciato-text: #332E08; /* Testo scuro per giallo */
+      --categoria-erbaceo-bg: #60A764;   /* Verde */
+      --categoria-erbaceo-text: #E4FDE0;
+      --categoria-fruttato-bg: #C04D4E;   /* Rosso */
+      --categoria-fruttato-text: #E4FDE0;
+      --categoria-speziato-bg: #4A7F9E;   /* Blu */
+      --categoria-speziato-text: #E4FDE0;
+    }
+
     html { box-sizing: border-box; } *, *:before, *:after { box-sizing: inherit; }
     body { background-color: var(--bg-color); color: var(--primary-text-color); font-family: 'Roboto Mono', monospace; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; line-height: 1.6; }
     body::-webkit-scrollbar { width: 10px; } body::-webkit-scrollbar-track { background: var(--scrollbar-bg); } body::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 6px; border: 2px solid var(--scrollbar-bg); } body::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover); } html { scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg); scrollbar-width: thin; }
@@ -25,9 +48,13 @@
     #ginocchi-gallery-section { margin-bottom: 2.5rem; padding: 1.5rem; background-color: var(--card-bg-color); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); }
     #ginocchi-gallery-section h2 { font-family: 'Rubik', sans-serif; text-align: center; color: var(--accent-color); margin-top: 0; margin-bottom: 1rem; }
     #category-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
-    .filter-btn { padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); background-color: var(--card-bg-color); color: var(--secondary-text-color); cursor: pointer; border-radius: 20px; font-family: 'Roboto Mono', monospace; font-size: 0.9rem; transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
-    .filter-btn:hover { background-color: rgba(94, 145, 148, 0.2); color: var(--primary-text-color); border-color: var(--accent-color); }
-    .filter-btn.active { background-color: var(--accent-color); color: var(--bg-color); border-color: var(--accent-color); font-weight: bold; }
+    .filter-btn { padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); background-color: var(--card-bg-color); color: var(--secondary-text-color); cursor: pointer; border-radius: 20px; font-family: 'Roboto Mono', monospace; font-size: 0.9rem; font-weight: bold; transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.1s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+    .filter-btn:hover { background-color: rgba(94, 145, 148, 0.1); border-color: var(--accent-color); color: var(--primary-text-color); transform: translateY(-1px); }
+    .filter-btn[data-categoria="Bilanciato"].active { background-color: var(--categoria-bilanciato-bg); color: var(--categoria-bilanciato-text); border-color: var(--categoria-bilanciato-bg); box-shadow: 0 0 8px var(--categoria-bilanciato-bg); }
+    .filter-btn[data-categoria="Erbaceo"].active { background-color: var(--categoria-erbaceo-bg); color: var(--categoria-erbaceo-text); border-color: var(--categoria-erbaceo-bg); box-shadow: 0 0 8px var(--categoria-erbaceo-bg); }
+    .filter-btn[data-categoria="Fruttato"].active { background-color: var(--categoria-fruttato-bg); color: var(--categoria-fruttato-text); border-color: var(--categoria-fruttato-bg); box-shadow: 0 0 8px var(--categoria-fruttato-bg); }
+    .filter-btn[data-categoria="Speziato"].active { background-color: var(--categoria-speziato-bg); color: var(--categoria-speziato-text); border-color: var(--categoria-speziato-bg); box-shadow: 0 0 8px var(--categoria-speziato-bg); }
+    .filter-btn[data-categoria="tutti"].active { background-color: var(--accent-color); color: var(--bg-color); border-color: var(--accent-color); box-shadow: 0 0 8px var(--accent-color); }
     #ginocchio-filter { display: block; width: 100%; max-width: 400px; margin: 0 auto 1.5rem; padding: 0.75rem 1rem; background-color: var(--bg-color); color: var(--primary-text-color); border: 1px solid var(--border-color); border-radius: 6px; font-family: 'Roboto Mono', monospace; font-size: 1rem; } #ginocchio-filter::placeholder { color: var(--secondary-text-color); opacity: 0.7; }
     #ginocchi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 1rem; justify-content: center; }
     .ginocchio-thumbnail { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; transition: transform 0.2s ease-in-out, filter 0.2s ease, background-color 0.2s ease; background-color: rgba(255, 255, 255, 0.03); padding: 0.5rem; border-radius: 8px; }
@@ -40,13 +67,23 @@
     iframe { width: 100%; height: 100%; border: none; }
     #command-suggestion { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background-color: var(--accent-color); color: var(--bg-color); padding: 0.5rem 1rem; border-radius: 6px 6px 0 0; font-size: 0.9rem; z-index: 10; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; white-space: nowrap; box-shadow: 0 -2px 5px rgba(0,0,0,0.3); }
     #command-suggestion.visible { opacity: 1; visibility: visible; } #command-suggestion code { background-color: rgba(0,0,0,0.2); padding: 0.1em 0.4em; border-radius: 3px; font-weight: bold; }
-    footer { background-color: var(--card-bg-color); margin-top: auto; padding: 2rem 1rem; border-top: 2px solid var(--border-color); text-align: center; } footer p { font-size: 0.85rem; color: var(--secondary-text-color); margin-top: 1rem; opacity: 0.7; }
+    footer { background-color: var(--card-bg-color); margin-top: auto; padding: 2rem 1rem; border-top: 2px solid var(--border-color); text-align: center; }
+    footer p { font-size: 0.85rem; color: var(--secondary-text-color); margin-top: 1rem; opacity: 0.7; }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="container"> <div class="header-content"> <img class="main-logo" id="logo-top" src="logo%20corretto%20orizzontale%20scontornato%20invertito.png" alt="Logo Ginocchi"> <h1>Ginocchi Official Chat</h1> </div> <img id="header-banner" src="La%20migliore%20modificata%20da%20me%20con%20sfondo.png" alt="Ginocchi Banner"> <div class="description"> I Ginocchi sono vivi. Hanno coscienza, gusti, rancori e traumi da raccontare. Qui puoi parlare con loro. Probabilmente ti insulteranno. </div> </div>
+    <div class="container">
+      <div class="header-content">
+        <img class="main-logo" id="logo-top" src="logo%20corretto%20orizzontale%20scontornato%20invertito.png" alt="Logo Ginocchi">
+        <h1>Ginocchi Official Chat</h1>
+      </div>
+      <img id="header-banner" src="La%20migliore%20modificata%20da%20me%20con%20sfondo.png" alt="Ginocchi Banner">
+      <div class="description">
+        I Ginocchi sono vivi. Hanno coscienza, gusti, rancori e traumi da raccontare. Qui puoi parlare con loro. Probabilmente ti insulteranno.
+      </div>
+    </div>
   </header>
 
   <div class="main-content container">
@@ -55,26 +92,26 @@
       <div id="category-filters"> <button class="filter-btn active" data-categoria="tutti">Mostra Tutti</button> <button class="filter-btn" data-categoria="Fruttato">Fruttato</button> <button class="filter-btn" data-categoria="Erbaceo">Erbaceo</button> <button class="filter-btn" data-categoria="Speziato">Speziato</button> <button class="filter-btn" data-categoria="Bilanciato">Bilanciato</button> </div>
       <input type="text" id="ginocchio-filter" placeholder="Cerca Ginocchio per nome nella categoria selezionata...">
       <div id="ginocchi-grid">
-        <!-- === Galleria Popolata con Categorie REALI === -->
+        <!-- === Galleria Popolata con Categorie e SRC corretti === -->
         <div class="ginocchio-thumbnail" data-nome="Punturirma" data-categoria="Bilanciato"><img src="PUNTURIRMA.jpg" alt="Punturirma"><span>Punturirma</span></div>
         <div class="ginocchio-thumbnail" data-nome="Roboshop" data-categoria="Bilanciato"><img src="ROBOSHOP.webp" alt="Roboshop"><span>Roboshop</span></div>
         <div class="ginocchio-thumbnail" data-nome="Robinario" data-categoria="Bilanciato"><img src="ROBERTO%20BINARIO.webp" alt="Robinario"><span>Robinario</span></div>
         <div class="ginocchio-thumbnail" data-nome="Prepezio" data-categoria="Bilanciato"><img src="PREPEZIO.webp" alt="Prepezio"><span>Prepezio</span></div>
         <div class="ginocchio-thumbnail" data-nome="Gorettore" data-categoria="Bilanciato"><img src="GORELIO.webp" alt="Gorettore"><span>Gorettore</span></div>
-        <div class="ginocchio-thumbnail" data-nome="Guerraniglio" data-categoria="Bilanciato"><img src="GUERRANIGLIO.webp" alt="Guerraniglio"><span>Guerraniglio</span></div> <!-- Categoria era B -->
-        <div class="ginocchio-thumbnail" data-nome="Tossicozza" data-categoria="Bilanciato"><img src="TOSSICOZZA.webp" alt="Tossicozza"><span>Tossicozza</span></div> <!-- Categoria era C -->
-        <div class="ginocchio-thumbnail" data-nome="Scarabarman" data-categoria="Bilanciato"><img src="SCARABARMAN%20QUADRATO.jpg" alt="Scarabarman"><span>Scarabarman</span></div> <!-- Categoria era D -->
+        <div class="ginocchio-thumbnail" data-nome="Guerraniglio" data-categoria="Bilanciato"><img src="GUERRANIGLIO.webp" alt="Guerraniglio"><span>Guerraniglio</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Tossicozza" data-categoria="Bilanciato"><img src="TOSSICOZZA.webp" alt="Tossicozza"><span>Tossicozza</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Scarabarman" data-categoria="Bilanciato"><img src="SCARABARMAN%20QUADRATO.jpg" alt="Scarabarman"><span>Scarabarman</span></div>
         <div class="ginocchio-thumbnail" data-nome="Sborniadrago" data-categoria="Bilanciato"><img src="SBORNIADRAGO.webp" alt="Sborniadrago"><span>Sborniadrago</span></div>
         <div class="ginocchio-thumbnail" data-nome="Tigrallo" data-categoria="Bilanciato"><img src="TIGRALLO.webp" alt="Tigrallo"><span>Tigrallo</span></div>
-        <div class="ginocchio-thumbnail" data-nome="Roboraffa" data-categoria="Bilanciato"><img src="Roboraffa.jpg" alt="Roboraffa"><span>Roboraffa</span></div> <!-- Categoria era C -->
-        <div class="ginocchio-thumbnail" data-nome="Florona" data-categoria="Erbaceo"><img src="Florona%20QUADRATA.jpg" alt="Florona"><span>Florona</span></div> <!-- Categoria era D -> Corretto Erbaceo -->
-        <div class="ginocchio-thumbnail" data-nome="Ran-occhio" data-categoria="Erbaceo"><img src="RAN-OCCHIO.webp" alt="Ran-occhio"><span>Ran-occhio</span></div> <!-- Categoria era A -> Corretto Erbaceo -->
-        <div class="ginocchio-thumbnail" data-nome="Arundizilla" data-categoria="Erbaceo"><img src="ARUNDIZILLA.webp" alt="Arundizilla"><span>Arundizilla</span></div> <!-- Categoria era B -> Corretto Erbaceo -->
-        <div class="ginocchio-thumbnail" data-nome="Gelsosauro" data-categoria="Erbaceo"><img src="GELSOSAURO.webp" alt="Gelsosauro"><span>Gelsosauro</span></div> <!-- Categoria era C -> Corretto Erbaceo -->
+        <div class="ginocchio-thumbnail" data-nome="Roboraffa" data-categoria="Bilanciato"><img src="Roboraffa.jpg" alt="Roboraffa"><span>Roboraffa</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Florona" data-categoria="Erbaceo"><img src="Florona%20QUADRATA.jpg" alt="Florona"><span>Florona</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Ran-occhio" data-categoria="Erbaceo"><img src="RAN-OCCHIO.webp" alt="Ran-occhio"><span>Ran-occhio</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Arundizilla" data-categoria="Erbaceo"><img src="ARUNDIZILLA.webp" alt="Arundizilla"><span>Arundizilla</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Gelsosauro" data-categoria="Erbaceo"><img src="GELSOSAURO.webp" alt="Gelsosauro"><span>Gelsosauro</span></div>
         <div class="ginocchio-thumbnail" data-nome="Lavandasma" data-categoria="Erbaceo"><img src="LAVANDASMA.webp" alt="Lavandasma"><span>Lavandasma</span></div>
         <div class="ginocchio-thumbnail" data-nome="Salviananda" data-categoria="Erbaceo"><img src="salviananda.webp" alt="Salviananda"><span>Salviananda</span></div>
-        <div class="ginocchio-thumbnail" data-nome="Koajhonny" data-categoria="Erbaceo"><img src="KOAJHONNY.webp" alt="Koajhonny"><span>Koajhonny</span></div> <!-- Categoria era B -> Corretto Erbaceo -->
-        <div class="ginocchio-thumbnail" data-nome="Rosiro" data-categoria="Erbaceo"><img src="ROSIRO.webp" alt="Rosiro"><span>Rosiro</span></div> <!-- Categoria era C -> Corretto Erbaceo -->
+        <div class="ginocchio-thumbnail" data-nome="Koajhonny" data-categoria="Erbaceo"><img src="KOAJHONNY.webp" alt="Koajhonny"><span>Koajhonny</span></div>
+        <div class="ginocchio-thumbnail" data-nome="Rosiro" data-categoria="Erbaceo"><img src="ROSIRO.webp" alt="Rosiro"><span>Rosiro</span></div>
         <div class="ginocchio-thumbnail" data-nome="Rosella" data-categoria="Erbaceo"><img src="ROSELLA.jpg" alt="Rosella"><span>Rosella</span></div>
         <div class="ginocchio-thumbnail" data-nome="Cybermint" data-categoria="Erbaceo"><img src="CYBERMINT.webp" alt="Cybermint"><span>Cybermint</span></div>
         <div class="ginocchio-thumbnail" data-nome="Rosmaruma" data-categoria="Erbaceo"><img src="RORMARUMA.webp" alt="Rosmaruma"><span>Rosmaruma</span></div>
@@ -94,11 +131,11 @@
         <div class="ginocchio-thumbnail" data-nome="Delfimaru" data-categoria="Fruttato"><img src="DELFIMARU%20QUADRATO.jpg" alt="Delfimaru"><span>Delfimaru</span></div>
         <div class="ginocchio-thumbnail" data-nome="Pignacano" data-categoria="Fruttato"><img src="PIGNACANO.webp" alt="Pignacano"><span>Pignacano</span></div>
         <div class="ginocchio-thumbnail" data-nome="Pompecora" data-categoria="Fruttato"><img src="POMPECORA.webp" alt="Pompecora"><span>Pompecora</span></div>
-        <div class="ginocchio-thumbnail" data-nome="Winenot?" data-categoria="Fruttato"><img src="WINENOT.webp" alt="Winenot?"><span>Winenot?</span></div> <!-- Categoria era C -->
+        <div class="ginocchio-thumbnail" data-nome="Winenot?" data-categoria="Fruttato"><img src="WINENOT.webp" alt="Winenot?"><span>Winenot?</span></div>
         <div class="ginocchio-thumbnail" data-nome="Callista" data-categoria="Speziato"><img src="CALLISTA%20QUADRATA.PNG" alt="Callista"><span>Callista</span></div>
         <div class="ginocchio-thumbnail" data-nome="Cannellorca" data-categoria="Speziato"><img src="CANNELLORCA.webp" alt="Cannellorca"><span>Cannellorca</span></div>
         <div class="ginocchio-thumbnail" data-nome="Anicinzia" data-categoria="Speziato"><img src="ANICINZIA.webp" alt="Anicinzia"><span>Anicinzia</span></div>
-        <div class="ginocchio-thumbnail" data-nome="Fumello" data-categoria="Speziato"><img src="FUMELLO.jpg" alt="Fumello"><span>Fumello</span></div> <!-- Categoria era C -->
+        <div class="ginocchio-thumbnail" data-nome="Fumello" data-categoria="Speziato"><img src="FUMELLO.jpg" alt="Fumello"><span>Fumello</span></div>
         <div class="ginocchio-thumbnail" data-nome="Peperonbro" data-categoria="Speziato"><img src="PEPERONBRO.webp" alt="Peperonbro"><span>Peperonbro</span></div>
         <div class="ginocchio-thumbnail" data-nome="Blobaffè" data-categoria="Speziato"><img src="BLOBAFF%C3%A8.webp" alt="Blobaffè"><span>Blobaffè</span></div>
         <div class="ginocchio-thumbnail" data-nome="Speziatopo" data-categoria="Speziato"><img src="speziatopo.jpg" alt="Speziatopo"><span>Speziatopo</span></div>
@@ -114,7 +151,7 @@
 
   <footer> <div class="container"> <img class="main-logo" id="logo-bottom" src="logo%20corretto%20orizzontale%20scontornato%20invertito.png" alt="Logo Ginocchi"> <p>© 2024 Ginocchi. Don't blame us if they hurt your feelings.</p> </div> </footer>
 
-  <script> document.addEventListener('DOMContentLoaded', function() { const filterInput = document.getElementById('ginocchio-filter'); const grid = document.getElementById('ginocchi-grid'); const categoryButtons = document.querySelectorAll('#category-filters .filter-btn'); const commandSuggestion = document.getElementById('command-suggestion'); if (!filterInput || !grid || !categoryButtons.length || !commandSuggestion) { console.error("Elementi essenziali per filtri/galleria mancanti."); return; } const thumbnails = grid.querySelectorAll('.ginocchio-thumbnail'); const chatbotIframe = document.getElementById('chatbot-iframe'); let suggestionTimeout; let activeCategory = 'tutti'; categoryButtons.forEach(button => { button.addEventListener('click', function() { categoryButtons.forEach(btn => btn.classList.remove('active')); this.classList.add('active'); activeCategory = this.getAttribute('data-categoria'); filterInput.value = ''; applyFilters(); }); }); filterInput.addEventListener('input', function() { applyFilters(); }); function applyFilters() { const nameFilterText = filterInput.value.toLowerCase().trim(); thumbnails.forEach(function(thumb) { const nomeGinocchio = thumb.getAttribute('data-nome').toLowerCase(); const categoriaGinocchio = thumb.getAttribute('data-categoria'); const isInActiveCategory = (activeCategory === 'tutti' || categoriaGinocchio === activeCategory); const matchesName = nomeGinocchio.includes(nameFilterText); const shouldBeHidden = !(isInActiveCategory && matchesName); thumb.classList.toggle('hidden-by-category', !isInActiveCategory && shouldBeHidden); thumb.classList.toggle('hidden-by-name', isInActiveCategory && !matchesName && shouldBeHidden); /* Rimuovi la classe se non è più nascosto da quella condizione */ if(!shouldBeHidden){ thumb.classList.remove('hidden-by-category', 'hidden-by-name'); } }); } thumbnails.forEach(function(thumb) { thumb.addEventListener('click', function() { if(this.classList.contains('hidden-by-category') || this.classList.contains('hidden-by-name')) { return; } const nomeGinocchio = this.getAttribute('data-nome'); const comando = `Parla con ${nomeGinocchio}`; if (navigator.clipboard) { navigator.clipboard.writeText(comando).then(() => { commandSuggestion.innerHTML = `Comando <code>${comando}</code> copiato! Incolla nella chat.`; commandSuggestion.classList.add('visible'); clearTimeout(suggestionTimeout); suggestionTimeout = setTimeout(() => { commandSuggestion.classList.remove('visible'); }, 4000); }).catch(err => { commandSuggestion.innerHTML = `Scrivi <code>${comando}</code> nella chat!`; commandSuggestion.classList.add('visible'); clearTimeout(suggestionTimeout); suggestionTimeout = setTimeout(() => { commandSuggestion.classList.remove('visible'); }, 4000); console.error('Errore copia:', err); }); } else { commandSuggestion.innerHTML = `Scrivi <code>${comando}</code> nella chat!`; commandSuggestion.classList.add('visible'); clearTimeout(suggestionTimeout); suggestionTimeout = setTimeout(() => { commandSuggestion.classList.remove('visible'); }, 4000); } if (chatbotIframe) { chatbotIframe.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }); }); applyFilters(); }); </script>
+  <script> document.addEventListener('DOMContentLoaded', function() { const filterInput = document.getElementById('ginocchio-filter'); const grid = document.getElementById('ginocchi-grid'); const categoryButtons = document.querySelectorAll('#category-filters .filter-btn'); const commandSuggestion = document.getElementById('command-suggestion'); if (!filterInput || !grid || !categoryButtons.length || !commandSuggestion) { console.error("Elementi essenziali per filtri/galleria mancanti."); return; } const thumbnails = grid.querySelectorAll('.ginocchio-thumbnail'); const chatbotIframe = document.getElementById('chatbot-iframe'); let suggestionTimeout; let activeCategory = 'tutti'; categoryButtons.forEach(button => { button.addEventListener('click', function() { categoryButtons.forEach(btn => btn.classList.remove('active')); this.classList.add('active'); activeCategory = this.getAttribute('data-categoria'); filterInput.value = ''; applyFilters(); }); }); filterInput.addEventListener('input', function() { applyFilters(); }); function applyFilters() { const nameFilterText = filterInput.value.toLowerCase().trim(); thumbnails.forEach(function(thumb) { const nomeGinocchio = thumb.getAttribute('data-nome').toLowerCase(); const categoriaGinocchio = thumb.getAttribute('data-categoria'); const isInActiveCategory = (activeCategory === 'tutti' || categoriaGinocchio === activeCategory); const matchesName = nomeGinocchio.includes(nameFilterText); const shouldBeHidden = !(isInActiveCategory && matchesName); thumb.classList.toggle('hidden-by-category', !isInActiveCategory && shouldBeHidden); thumb.classList.toggle('hidden-by-name', isInActiveCategory && !matchesName && shouldBeHidden); if(!shouldBeHidden){ thumb.classList.remove('hidden-by-category', 'hidden-by-name'); } }); } thumbnails.forEach(function(thumb) { thumb.addEventListener('click', function() { if(this.classList.contains('hidden-by-category') || this.classList.contains('hidden-by-name')) { return; } const nomeGinocchio = this.getAttribute('data-nome'); const comando = `Parla con ${nomeGinocchio}`; if (navigator.clipboard) { navigator.clipboard.writeText(comando).then(() => { commandSuggestion.innerHTML = `Comando <code>${comando}</code> copiato! Incolla nella chat.`; commandSuggestion.classList.add('visible'); clearTimeout(suggestionTimeout); suggestionTimeout = setTimeout(() => { commandSuggestion.classList.remove('visible'); }, 4000); }).catch(err => { commandSuggestion.innerHTML = `Scrivi <code>${comando}</code> nella chat!`; commandSuggestion.classList.add('visible'); clearTimeout(suggestionTimeout); suggestionTimeout = setTimeout(() => { commandSuggestion.classList.remove('visible'); }, 4000); console.error('Errore copia:', err); }); } else { commandSuggestion.innerHTML = `Scrivi <code>${comando}</code> nella chat!`; commandSuggestion.classList.add('visible'); clearTimeout(suggestionTimeout); suggestionTimeout = setTimeout(() => { commandSuggestion.classList.remove('visible'); }, 4000); } if (chatbotIframe) { chatbotIframe.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }); }); applyFilters(); }); </script>
 
 </body>
 </html>
