@@ -9,38 +9,98 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&family=Rubik:wght@700&display=swap" rel="stylesheet">
   <style>
-    :root { /* Palette */ --bg-color: #0E1128; --card-bg-color: #0A151A; --primary-text-color: #E4FDE0; --secondary-text-color: #A8D7C7; --accent-color: #5E9194; --border-color: #2D454F; /* Scrollbar */ --scrollbar-bg: #1A1C3A; --scrollbar-thumb: #3E4C7A; --scrollbar-thumb-hover: #5E9194; }
-    html { box-sizing: border-box; } *, *:before, *:after { box-sizing: inherit; }
-    body { background-color: var(--bg-color); color: var(--primary-text-color); font-family: 'Roboto Mono', monospace; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; line-height: 1.6; }
-    body::-webkit-scrollbar { width: 10px; } body::-webkit-scrollbar-track { background: var(--scrollbar-bg); } body::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 6px; border: 2px solid var(--scrollbar-bg); } body::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover); } html { scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg); scrollbar-width: thin; }
-    .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
-    header { background-color: var(--card-bg-color); padding: 2rem 0; margin-bottom: 2.5rem; border-bottom: 2px solid var(--border-color); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4); }
-    .header-content { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2rem; }
-    .main-logo { display: block; margin-left: auto; margin-right: auto; max-height: 160px; min-height: 80px; width: auto; vertical-align: middle; }
-    #logo-top { margin-bottom: 1.5rem; filter: drop-shadow(0 0 5px rgba(94, 145, 148, 0.4)); } #logo-bottom { margin-bottom: 1rem; opacity: 0.8; }
-    h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); font-family: 'Rubik', sans-serif; color: var(--primary-text-color); margin: 0; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6); }
-    #header-banner { display: block; width: 100%; max-width: 750px; height: auto; margin: 0 auto 2rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); border: 1px solid var(--border-color); }
-    header .description { font-size: 1.1rem; max-width: 700px; margin: 0 auto; color: var(--secondary-text-color); text-align: center; }
-    .main-content { flex: 1; padding-bottom: 3rem; position: relative; }
-    #ginocchi-gallery-section { margin-bottom: 2.5rem; padding: 1.5rem; background-color: var(--card-bg-color); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); }
-    #ginocchi-gallery-section h2 { font-family: 'Rubik', sans-serif; text-align: center; color: var(--accent-color); margin-top: 0; margin-bottom: 1rem; }
-    #category-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
-    .filter-btn { padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); background-color: var(--card-bg-color); color: var(--secondary-text-color); cursor: pointer; border-radius: 20px; font-family: 'Roboto Mono', monospace; font-size: 0.9rem; transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
-    .filter-btn:hover { background-color: rgba(94, 145, 148, 0.2); color: var(--primary-text-color); border-color: var(--accent-color); }
-    .filter-btn.active { background-color: var(--accent-color); color: var(--bg-color); border-color: var(--accent-color); font-weight: bold; }
-    #ginocchio-filter { display: block; width: 100%; max-width: 400px; margin: 0 auto 1.5rem; padding: 0.75rem 1rem; background-color: var(--bg-color); color: var(--primary-text-color); border: 1px solid var(--border-color); border-radius: 6px; font-family: 'Roboto Mono', monospace; font-size: 1rem; } #ginocchio-filter::placeholder { color: var(--secondary-text-color); opacity: 0.7; }
-    #ginocchi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 1rem; justify-content: center; }
-    .ginocchio-thumbnail { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; transition: transform 0.2s ease-in-out, filter 0.2s ease, background-color 0.2s ease; background-color: rgba(255, 255, 255, 0.03); padding: 0.5rem; border-radius: 8px; }
-    .ginocchio-thumbnail:hover { transform: scale(1.1); filter: brightness(1.2); background-color: rgba(94, 145, 148, 0.2); }
-    .ginocchio-thumbnail img { width: 70px; height: 70px; object-fit: cover; border-radius: 50%; border: 2px solid var(--accent-color); margin-bottom: 0.5rem; }
-    .ginocchio-thumbnail span { font-size: 0.75rem; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
-    .hidden-by-category, .hidden-by-name { display: none !important; }
-    .chat-section { position: relative; }
-    .chat-container { background-color: var(--card-bg-color); margin: 0 auto; width: 100%; max-width: 800px; height: 65vh; min-height: 500px; max-height: 700px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6); }
-    iframe { width: 100%; height: 100%; border: none; }
-    #command-suggestion { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background-color: var(--accent-color); color: var(--bg-color); padding: 0.5rem 1rem; border-radius: 6px 6px 0 0; font-size: 0.9rem; z-index: 10; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; white-space: nowrap; box-shadow: 0 -2px 5px rgba(0,0,0,0.3); }
-    #command-suggestion.visible { opacity: 1; visibility: visible; } #command-suggestion code { background-color: rgba(0,0,0,0.2); padding: 0.1em 0.4em; border-radius: 3px; font-weight: bold; }
-    footer { background-color: var(--card-bg-color); margin-top: auto; padding: 2rem 1rem; border-top: 2px solid var(--border-color); text-align: center; } footer p { font-size: 0.85rem; color: var(--secondary-text-color); margin-top: 1rem; opacity: 0.7; }
+    :root {
+  /* ... variabili colori precedenti ... */
+
+  /* >>> Nuove Variabili Colore per Categorie <<< */
+  --categoria-bilanciato-bg: #E6D440; /* Giallo ocra/dorato */
+  --categoria-bilanciato-text: #332E08; /* Testo scuro per giallo */
+
+  --categoria-erbaceo-bg: #60A764; /* Verde medio */
+  --categoria-erbaceo-text: #E4FDE0;
+
+  --categoria-fruttato-bg: #C04D4E; /* Rosso/Amaranto */
+  --categoria-fruttato-text: #E4FDE0;
+
+  --categoria-speziato-bg: #4A7F9E; /* Blu medio/polvere */
+  --categoria-speziato-text: #E4FDE0;
+}
+
+
+/* ... altri stili ... */
+
+/* Stili base per i filtri categoria (rimangono quasi uguali) */
+#category-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-btn {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg-color); /* Colore base bottone non attivo */
+  color: var(--secondary-text-color); /* Colore testo bottone non attivo */
+  cursor: pointer;
+  border-radius: 20px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+  font-weight: bold; /* Reso grassetto per leggibilità */
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Leggera ombra */
+}
+
+.filter-btn:hover {
+  /* Hover generico - schiarisce leggermente e usa accento per bordo */
+  background-color: rgba(94, 145, 148, 0.1);
+  border-color: var(--accent-color);
+  color: var(--primary-text-color);
+  transform: translateY(-1px); /* Leggero effetto sollevamento */
+}
+
+/* >>> Stili Specifici per Categoria <<< */
+.filter-btn[data-categoria="Bilanciato"].active {
+  background-color: var(--categoria-bilanciato-bg);
+  color: var(--categoria-bilanciato-text);
+  border-color: var(--categoria-bilanciato-bg);
+  box-shadow: 0 0 8px var(--categoria-bilanciato-bg); /* Glow quando attivo */
+}
+.filter-btn[data-categoria="Erbaceo"].active {
+  background-color: var(--categoria-erbaceo-bg);
+  color: var(--categoria-erbaceo-text);
+  border-color: var(--categoria-erbaceo-bg);
+  box-shadow: 0 0 8px var(--categoria-erbaceo-bg);
+}
+.filter-btn[data-categoria="Fruttato"].active {
+  background-color: var(--categoria-fruttato-bg);
+  color: var(--categoria-fruttato-text);
+  border-color: var(--categoria-fruttato-bg);
+  box-shadow: 0 0 8px var(--categoria-fruttato-bg);
+}
+.filter-btn[data-categoria="Speziato"].active {
+  background-color: var(--categoria-speziato-bg);
+  color: var(--categoria-speziato-text);
+  border-color: var(--categoria-speziato-bg);
+  box-shadow: 0 0 8px var(--categoria-speziato-bg);
+}
+
+/* Stile per il bottone "Mostra Tutti" attivo */
+/* Manteniamo lo stile originale (con accento) per distinguerlo */
+.filter-btn[data-categoria="tutti"].active {
+  background-color: var(--accent-color);
+  color: var(--bg-color); /* Usa sfondo body per contrasto */
+  border-color: var(--accent-color);
+  box-shadow: 0 0 8px var(--accent-color);
+}
+
+
+/* Rimuoviamo lo stile generico .active che avevamo prima */
+/* .filter-btn.active { ... } Rimosso */
+
+
+/* ... resto degli stili ... */
   </style>
 </head>
 <body>
