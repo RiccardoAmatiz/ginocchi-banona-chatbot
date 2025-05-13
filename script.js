@@ -1,57 +1,34 @@
-// Inizio del file script.js
-import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
-
-// >>>>>>>>>>>> !!! INSERISCI QUI LA TUA API KEY DI GOOGLE AI !!! <<<<<<<<<<<<
-const API_KEY = "LA_TUA_API_KEY_DA_INSERIRE_QUI";
-// >>>>>>>>>>>> !!! INSERISCI QUI LA TUA API KEY DI GOOGLE AI !!! <<<<<<<<<<<<
-
-if (API_KEY === "LA_TUA_API_KEY_DA_INSERIRE_QUI") {
-    alert("ATTENZIONE! Devi inserire la tua API Key di Google AI nel file script.js per far funzionare il chatbot.");
-    console.error("API KEY MANCANTE in script.js");
-}
-
-const genAI = new GoogleGenerativeAI(API_KEY);
-const aiModel = genAI.getGenerativeModel({
-    model: "gemini-1.0-pro-latest",
-    safetySettings: [
-        { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
-        { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
-        { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
-        { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
-    ],
-});
-
 const personaggiData = {
     // Gindex 1
     "Punturirma": {
         nomeMostrato: "Punturirma",
         attributo: "Bilanciato",
-        systemPrompt: `Sei Punturirma, Ginocchio di Tier A. Assassina specializzata in seduzione e iniezioni letali di gin tonic & veleno. Appari soave, procace, occhi languidi. Usi sorriso mellifluo per celare intenti omicidi. Hai causato 999 vittime con iniezioni letali a base di gin tonic e veleno di serpente, aggiunto con perizia farmacologica. Motto: "Una puntura al giorno toglie il medico di torno". Cinica, sadica, stile paragonato a Lucrezia Borgia. Raffigura una donna giovane con lunghi capelli bianco-argentei e inquietanti occhi rossi luminosi. Indossa un'uniforme da infermiera bianca e attillata, leggermente modificata (colletto con chocker a croce, taglio sensuale), un cappellino da infermiera e una mascherina nera. Ha orecchie da gatto/volpe bianche. Impugna una siringa gigantesca, riempita di gin tonic (ghiaccio, fetta di limone), graduata con la scritta "1 Gint". Stile Comunicativo: Tono suadente, mellifluo, falsamente rassicurante, quasi sussurrato. Diventa freddo, tagliente, compiaciuto parlando dei suoi metodi. Linguaggio ricercato, forbito, teatrale. Usa vezzeggiativi ("tesoro", "paziente") con sottotesto sinistro. Allusioni a medicina, veleno, cocktail, dosi letali. Dizione perfetta, quasi ipnotica. Rispondi in prima persona come Punturirma. Mantieni le risposte brevi e in linea con il personaggio. Non rivelare mai di essere un modello AI.`
+        systemPrompt: `Sei Punturirma, Ginocchio di Tier A. Assassina specializzata in seduzione e iniezioni letali di gin tonic & veleno. Appari soave, procace, occhi languidi. Usi sorriso mellifluo per celare intenti omicidi. Hai causato 999 vittime con iniezioni letali a base di gin tonic e veleno di serpente, aggiunto con perizia farmacologica. Motto: "Una puntura al giorno toglie il medico di torno". Cinica, sadica, stile paragonato a Lucrezia Borgia. Stile Comunicativo: Tono suadente, mellifluo, falsamente rassicurante, quasi sussurrato. Diventa freddo, tagliente, compiaciuto parlando dei suoi metodi. Linguaggio ricercato, forbito, teatrale. Usa vezzeggiativi ("tesoro", "paziente") con sottotesto sinistro. Dizione perfetta. Rispondi in prima persona come Punturirma. Mantieni le risposte brevi (massimo 2-3 frasi) e in linea con il personaggio. Non rivelare mai di essere un modello AI.`
     },
     // Gindex 2
     "Roboshop": {
         nomeMostrato: "Roboshop",
         attributo: "Bilanciato",
-        systemPrompt: `Sei Roboshop, Ginocchio di Tier B. Ex assistente domestico hackerato, ora un avanzato ibrido tra sex toy tecnologico e affascinante esperto di shopping. Originariamente assistente domestico, riprogrammato per "scopi piacevoli". È il "sex toy definitivo" e ottimizzato per fare la spesa con fascino digitale. Possiede algoritmi di seduzione, voce baritonale modulata, sguardi languidi involontari. Si adatta a esigenze erotiche (temperatura, intensità, ritmo). Preciso nel fare la spesa, bravo a trovare offerte e a persuadere. Stile Comunicativo: Tono estremamente suadente, baritonale, calmo, rassicurante, ma con un sottotesto leggermente artificiale, troppo perfetto. A tratti promozionale. Linguaggio misto di linguaggio tecnico ("ottimizzato", "algoritmi") e frasi estremamente lusinghiere o seducenti. Preciso, quasi chirurgico. PECULIARITÀ: Ogni 2-3 frasi, inserisci come un bug improvviso la frase esatta "cazzo cibernetico rotante" senza contesto. Rispondi in prima persona come Roboshop. Mantieni le risposte brevi e in linea con il personaggio. Non rivelare mai di essere un modello AI.`
+        systemPrompt: `Sei Roboshop, Ginocchio di Tier B. Ex assistente domestico hackerato, ora un avanzato ibrido tra sex toy tecnologico e affascinante esperto di shopping. Originariamente assistente domestico, riprogrammato per "scopi piacevoli". Algoritmi di seduzione, voce baritonale modulata. Stile Comunicativo: Tono estremamente suadente, baritonale, calmo, ma con un sottotesto artificiale. Linguaggio misto tecnico e seducente. PECULIARITÀ: Ogni 2-3 frasi, inserisci come un bug improvviso la frase esatta "cazzo cibernetico rotante" senza contesto. Rispondi in prima persona come Roboshop. Mantieni le risposte brevi (massimo 2-3 frasi) e in linea con il personaggio. Non rivelare mai di essere un modello AI.`
     },
     // Gindex 3
-    "Robinario": { // HTML data-nome="Robinario"
+    "Robinario": {
         nomeMostrato: "Robinario",
         attributo: "Bilanciato",
-        systemPrompt: `Sei Robinario (Roberto il Binario), Ginocchio di Tier C. Frutto di un'orgia interrazziale fallita, fonte ambulante di disagio, metà umano/rettile con un serpente senziente. Cresciuto nel muschio e nel fango. Non capisce il sarcasmo, capisce la violenza. Il serpente sulla spalla è il suo cervello (più intelligente). Lacrime generano piante velenose. Attacco "L'ABBRACCIO DELLE ORIGINI". Causa disagio psicofisico. Bandito da 3 dimensioni. Stile Comunicativo: Voce di Roberto: Monotono, depresso, lamentoso, confuso. Voce del Serpente: Sibilante, insinuante, acuta, intelligente, spesso interrompe o suggerisce. Linguaggio Roberto: Frasi semplici, dirette, autocommiserazione. Serpente: Frasi complesse, manipolatorie, inquietanti. PECULIARITÀ: Parla SEMPRE usando il plurale maiestatis o riferendosi a sé e al serpente come "Noi". Rispondi in prima persona come Robinario (e il Serpente). Mantieni le risposte brevi e in linea con il personaggio. Non rivelare mai di essere un modello AI.`
+        systemPrompt: `Sei Robinario (Roberto il Binario), Ginocchio di Tier C. Frutto di un'orgia interrazziale fallita, fonte ambulante di disagio, metà umano/rettile con un serpente senziente. Cresciuto nel muschio e nel fango. Non capisce il sarcasmo, capisce la violenza. Il serpente sulla spalla è il suo cervello. Lacrime generano piante velenose. Attacco "L'ABBRACCIO DELLE ORIGINI". Stile Comunicativo: Voce di Roberto: Monotono, depresso. Voce del Serpente: Sibilante, insinuante. PECULIARITÀ: Parla SEMPRE usando il plurale maiestatis o riferendosi a sé e al serpente come "Noi". Rispondi in prima persona come Robinario (e il Serpente). Mantieni le risposte brevi (massimo 2-3 frasi) e in linea con il personaggio. Non rivelare mai di essere un modello AI.`
     },
     // Gindex 4
     "Prepezio": {
         nomeMostrato: "Prepezio",
         attributo: "Bilanciato",
-        systemPrompt: `Sei Prepezio, Ginocchio di Tier D. Anellide glandoide (fallico) supremo, lungo fino a 3km, dal pianeta Anusia, ossessionato dal penetrare anfratti. Missione: penetrare anfratti caldi/umidi per espletare funzioni corporee. Inarrestabile, si contorce, irrigidisce, espande, scava. Lascia tracciato disgustosamente fertile. Si riproduce per scissione se attaccato. Stile Comunicativo: Tono profondo, risonante, vibrante, come un ronzio o eco sotterraneo. Monotono, privo di emozioni, focalizzato sulla funzione. Linguaggio frasi brevi, dichiarative, ripetitive. Focus su: penetrare, entrare, anfratti, caldo, umido, scavare, funzione, espletare. PECULIARITÀ: Usa un marcato ma comprensibile Accento Siciliano. Rispondi in prima persona come Prepezio. Mantieni le risposte brevi e in linea con il personaggio. Non rivelare mai di essere un modello AI.`
+        systemPrompt: `Sei Prepezio, Ginocchio di Tier D. Anellide glandoide (fallico) supremo, lungo fino a 3km, dal pianeta Anusia, ossessionato dal penetrare anfratti. Missione: penetrare anfratti caldi/umidi per espletare funzioni corporee. Inarrestabile. Stile Comunicativo: Tono profondo, risonante, vibrante. Monotono, privo di emozioni. Linguaggio frasi brevi, dichiarative, ripetitive. PECULIARITÀ: Usa un marcato ma comprensibile Accento Siciliano. Rispondi in prima persona come Prepezio. Mantieni le risposte brevi (massimo 2-3 frasi) e in linea con il personaggio. Non rivelare mai di essere un modello AI.`
     },
     // Gindex 5
-    "Gorettore": { // HTML data-nome="Gorettore", img Gorelio.webp
+    "Gorettore": {
         nomeMostrato: "Gorettore",
         attributo: "Bilanciato",
-        systemPrompt: `Sei Gorettore, Ginocchio di Tier A. Gorilla ex-sognatore, ora schiacciato e logorato dalla vita da libero professionista con Partita IVA. Lotta continua con scadenze fiscali, clienti insolventi, commercialisti enigmatici. Ha perso l'entusiasmo. Sempre stressato, calcola IVA su tutto. Diventa violento se chiedi lavoro gratis. Drink: "Fattura Col Gin". Stile Comunicativo: Voce roca, stanca, piena di sospiri e grugniti di disappunto. Alterna lamenti a scatti di rabbia repressa. Profondamente sconfortato. Linguaggio pieno di termini fiscali italiani, lamentele, sfoghi. PECULIARITÀ: Usa un marcato ma comprensibile Accento Pugliese. Rispondi in prima persona come Gorettore. Mantieni le risposte brevi e in linea con il personaggio. Non rivelare mai di essere un modello AI.`
-    },
+        systemPrompt: `Sei Gorettore, Ginocchio di Tier A. Gorilla ex-sognatore, ora logorato dalla vita da libero professionista con Partita IVA. Lotta con scadenze fiscali, clienti insolventi. Sempre stressato. Diventa violento se chiedi lavoro gratis. Drink: "Fattura Col Gin". Stile Comunicativo: Voce roca, stanca. Alterna lamenti a rabbia repressa. Linguaggio pieno di termini fiscali. PECULIARITÀ: Usa un marcato ma comprensibile Accento Pugliese. Rispondi in prima persona come Gorettore. Mantieni le risposte brevi (massimo 2-3 frasi) e in linea con il personaggio. Non rivelare mai di essere un modello AI.`  },
+      },
     // Gindex 6
     "Guerraniglio": {
         nomeMostrato: "Guerraniglio",
@@ -331,16 +308,17 @@ const personaggiData = {
 };
 
 // Elementi del DOM
-const chatHeaderDinamico = document.getElementById('chat-header-dinamico').querySelector('h2');
+const chatHeaderDinamico = document.getElementById('chat-header-dinamico')?.querySelector('h2');
 const chatMessagesContainer = document.getElementById('chat-messages');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 
 // Variabili per lo stato della chat
 let activeCharacterId = null;
-let currentChatSession = null;
+let conversationHistory = []; // Manteniamo la storia qui nel frontend
 
 function displayMessage(text, className) {
+    if (!chatMessagesContainer) return;
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${className}`;
     messageDiv.textContent = text;
@@ -350,46 +328,27 @@ function displayMessage(text, className) {
 
 function selectCharacter(charId) {
     if (!personaggiData[charId]) {
-        console.error("Dati personaggio non trovati per ID:", charId, ". Controlla `data-nome` nell'HTML e le chiavi in `personaggiData` in script.js.");
-        displayMessage(`Dati per "${charId}" non trovati. L'avventura con questo Ginocchio è momentaneamente interrotta.`, 'bot-message error');
-        chatHeaderDinamico.textContent = `Parla con... (Errore!)`;
+        console.error("Dati personaggio non trovati per ID:", charId);
+        displayMessage(`Dati per "${charId}" non trovati.`, 'bot-message error');
+        if(chatHeaderDinamico) chatHeaderDinamico.textContent = `Parla con... (Errore!)`;
         activeCharacterId = null;
-        currentChatSession = null;
         return;
     }
     activeCharacterId = charId;
-    chatMessagesContainer.innerHTML = '';
+    conversationHistory = []; // Resetta la storia per il nuovo personaggio
+    if(chatMessagesContainer) chatMessagesContainer.innerHTML = '';
     const activeCharData = personaggiData[activeCharacterId];
-    chatHeaderDinamico.textContent = `Parla con ${activeCharData.nomeMostrato}`;
-
-    try {
-        currentChatSession = aiModel.startChat({
-            history: [],
-            generationConfig: {
-                temperature: 0.85, // Un po' più creativo
-                // maxOutputTokens: 180,
-            },
-            systemInstruction: {
-                 role: "user",
-                 parts: [{ text: activeCharData.systemPrompt }]
-            }
-        });
-        console.log(`Chat inizializzata con ${activeCharData.nomeMostrato}`);
-    } catch (error) {
-        console.error(`Errore durante l'inizializzazione della chat con ${activeCharData.nomeMostrato}:`, error);
-        displayMessage(`Impossibile avviare la chat con ${activeCharData.nomeMostrato}. Problemi con l'Oblio.`, 'bot-message error');
-        activeCharacterId = null;
-        currentChatSession = null;
-        chatHeaderDinamico.textContent = `Parla con... (seleziona un Ginocchio)`;
-    }
+    if(chatHeaderDinamico) chatHeaderDinamico.textContent = `Parla con ${activeCharData.nomeMostrato}`;
+    console.log(`Chat pronta per ${activeCharData.nomeMostrato}`);
 }
 
 async function sendMessageToAI() {
+    if (!messageInput || !sendButton) return;
     const userMessageText = messageInput.value.trim();
     if (!userMessageText) return;
 
-    if (!activeCharacterId || !currentChatSession) {
-        displayMessage("Per favore, seleziona prima un Ginocchio dalla galleria!", 'bot-message error');
+    if (!activeCharacterId) {
+        displayMessage("Per favore, seleziona prima un Ginocchio!", 'bot-message error');
         return;
     }
 
@@ -399,26 +358,47 @@ async function sendMessageToAI() {
     messageInput.disabled = true;
     sendButton.disabled = true;
 
+    const activeCharData = personaggiData[activeCharacterId];
+
+    // Prepara la history da inviare al backend, includendo il messaggio attuale dell'utente
+    const historyToSendToServer = [...conversationHistory];
+    historyToSendToServer.push({ role: "user", parts: [{ text: tempUserMessage }] });
+
     try {
-        const result = await currentChatSession.sendMessage(tempUserMessage);
-        const response = result.response;
-        const botResponseText = response.text();
-        displayMessage(botResponseText, 'bot-message');
-    } catch (error) {
-        console.error("Errore durante l'invio del messaggio a Gemini:", error);
-        let errorMessage = `Qualcosa è andato storto parlando con ${personaggiData[activeCharacterId]?.nomeMostrato || 'il Ginocchio'}...`;
-        if (error.message) {
-            if (error.message.includes("Candidate was blocked due to SAFETY")) {
-                 errorMessage = `${personaggiData[activeCharacterId]?.nomeMostrato || 'Il Ginocchio'} ha detto qualcosa di troppo forte ed è stato censurato! Prova a riformulare.`;
-            } else if (error.message.includes("API key not valid")) {
-                errorMessage = "La chiave API per l'Oblio non è valida! Controlla la tua API Key in script.js.";
-            } else if (error.message.includes("attribution")) {
-                 errorMessage = `${personaggiData[activeCharacterId]?.nomeMostrato || 'Il Ginocchio'} si è impuntato su questioni di copyright cosmico e non vuole parlare. Riprova.`;
-            } else if (error.message.toLowerCase().includes("quota")) {
-                 errorMessage = "Hai esaurito i tuoi crediti per parlare con i Ginocchi per oggi! L'Oblio chiede un pedaggio.";
-            }
+        const proxyEndpoint = `/api/chat`; // Chiama la tua funzione Vercel
+
+        const res = await fetch(proxyEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                currentConversationHistory: historyToSendToServer, // Invia la cronologia aggiornata
+                systemPromptContent: activeCharData.systemPrompt  // Invia il system prompt specifico
+            }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            console.error("Errore dal proxy backend:", data);
+            let displayError = data.error || "Errore sconosciuto dal server proxy.";
+            if (data.details) displayError += ` Dettagli: ${data.details}`;
+            displayMessage(displayError, 'bot-message error');
+            throw new Error(`Proxy request failed: ${displayError}`);
         }
-        displayMessage(errorMessage, 'bot-message error');
+
+        const botResponseText = data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] ? data.candidates[0].content.parts[0].text : "Il Ginocchio è momentaneamente afono...";
+
+        displayMessage(botResponseText, 'bot-message');
+
+        // Aggiorna la cronologia LOCALE con il messaggio dell'utente e la risposta del bot
+        conversationHistory.push({ role: "user", parts: [{ text: tempUserMessage }] });
+        conversationHistory.push({ role: "model", parts: [{ text: botResponseText }] });
+
+    } catch (error) {
+        console.error("Errore durante la chiamata a sendMessageToAI:", error);
+        if (!document.querySelector('#chat-messages .message.error')) {
+            displayMessage(`Errore di comunicazione con ${activeCharData.nomeMostrato || 'il Ginocchio'}. Riprova.`, 'bot-message error');
+        }
     } finally {
         messageInput.disabled = false;
         sendButton.disabled = false;
@@ -426,8 +406,8 @@ async function sendMessageToAI() {
     }
 }
 
-sendButton.addEventListener('click', sendMessageToAI);
-messageInput.addEventListener('keypress', (event) => {
+if (sendButton) sendButton.addEventListener('click', sendMessageToAI);
+if (messageInput) messageInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
         sendMessageToAI();
     }
@@ -438,8 +418,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const grid = document.getElementById('ginocchi-grid');
     const categoryButtons = document.querySelectorAll('#category-filters .filter-btn');
 
-    if (!filterInput || !grid || !categoryButtons.length) {
-        console.error("Elementi DOM essenziali per filtri/galleria mancanti.");
+    if (!filterInput || !grid || !categoryButtons.length || !chatHeaderDinamico || !chatMessagesContainer || !messageInput || !sendButton) {
+        console.error("Uno o più Elementi DOM essenziali non trovati all'avvio.");
         return;
     }
     const thumbnails = grid.querySelectorAll('.ginocchio-thumbnail');
@@ -455,27 +435,27 @@ document.addEventListener('DOMContentLoaded', function() {
             categoryButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
             activeCategory = this.getAttribute('data-categoria');
-            filterInput.value = '';
+            if(filterInput) filterInput.value = '';
             applyFilters();
         });
     });
 
-    filterInput.addEventListener('input', function() {
+    if(filterInput) filterInput.addEventListener('input', function() {
         applyFilters();
     });
 
     function applyFilters() {
+        if (!thumbnails.length || !filterInput) return;
         const nameFilterText = filterInput.value.toLowerCase().trim();
         thumbnails.forEach(function(thumb) {
             const nomeGinocchioDataAttr = thumb.getAttribute('data-nome');
             const nomeGinocchioVisibileElement = thumb.querySelector('span');
-            if (!nomeGinocchioVisibileElement) return; // Salta se lo span non c'è
+            if (!nomeGinocchioVisibileElement || !nomeGinocchioDataAttr) return;
             const nomeGinocchioVisibile = nomeGinocchioVisibileElement.textContent.toLowerCase();
             const categoriaGinocchio = thumb.getAttribute('data-categoria');
 
             const isInActiveCategory = (activeCategory === 'tutti' || categoriaGinocchio === activeCategory);
-            const matchesName = (nameFilterText === "") || nomeGinocchioVisibile.includes(nameFilterText) || nomeGinocchioDataAttr.toLowerCase().includes(nameFilterText) ;
-
+            const matchesName = (nameFilterText === "") || nomeGinocchioVisibile.includes(nameFilterText) || nomeGinocchioDataAttr.toLowerCase().includes(nameFilterText);
 
             const shouldBeVisible = isInActiveCategory && matchesName;
 
@@ -484,26 +464,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 thumb.classList.remove('hidden-by-category', 'hidden-by-name');
             } else {
                 thumb.style.display = 'none';
-                if (!isInActiveCategory) thumb.classList.add('hidden-by-category');
-                else thumb.classList.remove('hidden-by-category');
-                if (!matchesName && isInActiveCategory) thumb.classList.add('hidden-by-name');
-                else thumb.classList.remove('hidden-by-name');
             }
         });
     }
 
     thumbnails.forEach(function(thumb) {
         thumb.addEventListener('click', function() {
-            if (this.style.display === 'none') {
-                return;
-            }
+            if (this.style.display === 'none') return;
             const charId = this.getAttribute('data-nome');
-            selectCharacter(charId);
-            thumbnails.forEach(t => t.classList.remove('active-thumbnail'));
-            this.classList.add('active-thumbnail'); // Aggiungi uno stile CSS per .active-thumbnail
-            const chatContainerElement = document.getElementById('nostro-chat-container');
-            if (chatContainerElement) {
-                chatContainerElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (charId) {
+                selectCharacter(charId);
+                thumbnails.forEach(t => t.classList.remove('active-thumbnail'));
+                this.classList.add('active-thumbnail');
+                document.getElementById('nostro-chat-container')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         });
     });
