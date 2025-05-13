@@ -32,7 +32,145 @@
       --categoria-speziato-bg: #4A7F9E;   /* Blu */
       --categoria-speziato-text: #E4FDE0;
     }
+#chat-header-dinamico {
+    padding: 10px 15px;
+    background-color: rgba(0,0,0,0.2); /* Sfondo leggermente scuro per l'header chat */
+    border-bottom: 1px solid var(--border-color);
+    display: flex; /* Per allineare avatar e testo */
+    align-items: center; /* Allinea verticalmente avatar e testo */
+}
 
+#chat-header-dinamico h2 {
+    margin: 0; /* Rimuovi margini di default dall'h2 */
+    font-size: 1.2em; /* Dimensione testo header chat */
+    color: var(--primary-text-color);
+}
+
+#chat-messages {
+    height: calc(65vh - 120px); /* Altezza dinamica meno header e input area */
+    min-height: 380px; /* Altezza minima per consistenza */
+    border: none; /* Rimuoviamo il bordo precedente se c'era */
+    padding: 15px; /* Più padding interno */
+    overflow-y: auto;
+    background-color: transparent; /* Lo sfondo sarà sul .chat-container */
+    display: flex;
+    flex-direction: column; /* Mantiene i messaggi in colonna */
+}
+
+/* Stile base per tutte le nuvolette */
+.message {
+    padding: 10px 15px;
+    border-radius: 18px; /* Bordi più arrotondati per nuvolette */
+    margin-bottom: 10px;
+    max-width: 75%; /* Larghezza massima della nuvoletta */
+    word-wrap: break-word;
+    line-height: 1.4;
+    position: relative; /* Per eventuali "code" delle nuvolette (più avanzato) */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.user-message {
+    background-color: #005C4B; /* Verde scuro WhatsApp per utente */
+    color: white;
+    align-self: flex-end; /* Allinea a destra */
+    border-bottom-right-radius: 5px; /* Angolo meno arrotondato per la "coda" */
+    margin-left: auto; /* Spinge a destra */
+}
+
+.bot-message {
+    background-color: #202C33; /* Grigio scuro WhatsApp per bot */
+    color: #E9EDEF; /* Testo leggermente più chiaro per bot */
+    align-self: flex-start; /* Allinea a sinistra */
+    border-bottom-left-radius: 5px; /* Angolo meno arrotondato per la "coda" */
+    margin-right: auto; /* Spinge a sinistra */
+}
+
+/* Stile per i messaggi di errore/sistema (opzionale) */
+.bot-message.error, .bot-message.system-info {
+    background-color: #5c0000; /* Rosso scuro per errori */
+    color: white;
+    align-self: center; /* Centrato */
+    max-width: 90%;
+    text-align: center;
+    font-size: 0.9em;
+}
+.bot-message.system-info {
+    background-color: var(--accent-color);
+    color: var(--card-bg-color);
+}
+
+
+#chat-input-area {
+    display: flex;
+    padding: 10px 15px;
+    border-top: 1px solid var(--border-color);
+    background-color: rgba(0,0,0,0.1);
+}
+
+#message-input {
+    flex-grow: 1;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px; /* Input più arrotondato */
+    background-color: #2A3942; /* Sfondo input area WhatsApp */
+    color: var(--primary-text-color);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1rem;
+    margin-right: 10px;
+}
+#message-input::placeholder {
+    color: #8696A0; /* Colore placeholder */
+}
+
+
+#send-button {
+    padding: 10px 18px;
+    background-color: var(--accent-color); /* Usa il colore accento */
+    color: var(--bg-color); /* Testo scuro per contrasto */
+    border: none;
+    border-radius: 50%; /* Bottone invio rotondo */
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#send-button:hover {
+    background-color: #7FBABF; /* Versione più chiara dell'accento in hover */
+}
+/* Potresti voler usare un'icona SVG per il pulsante invio al posto del testo */
+/* Per ora lasciamo il testo "Invia" */
+
+
+/* Stile per il thumbnail del personaggio attivo nella griglia */
+.ginocchio-thumbnail.active-thumbnail {
+    box-shadow: 0 0 12px 3px var(--accent-color);
+    transform: scale(1.15);
+    background-color: rgba(94, 145, 148, 0.3) !important;
+    border-color: var(--accent-color) !important; /* Assicurati che il bordo sia visibile */
+}
+.ginocchio-thumbnail.active-thumbnail img {
+    border-color: #fff; /* Bordo bianco per l'immagine del personaggio attivo */
+}
+
+/* Miglioramenti generali (opzionali) */
+.container {
+    padding: 0 1.5rem; /* Più padding laterale per il container principale */
+}
+#ginocchi-grid {
+    gap: 1.5rem; /* Più spazio tra le icone */
+}
+.ginocchio-thumbnail {
+    padding: 0.75rem; /* Più padding interno per le thumbnail */
+}
+.ginocchio-thumbnail img {
+    width: 75px; /* Immagini thumbnail leggermente più grandi */
+    height: 75px;
+}
+.ginocchio-thumbnail span {
+    font-size: 0.8rem;
+}
     html { box-sizing: border-box; } *, *:before, *:after { box-sizing: inherit; }
     body { background-color: var(--bg-color); color: var(--primary-text-color); font-family: 'Roboto Mono', monospace; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; line-height: 1.6; }
     body::-webkit-scrollbar { width: 10px; } body::-webkit-scrollbar-track { background: var(--scrollbar-bg); } body::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 6px; border: 2px solid var(--scrollbar-bg); } body::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover); } html { scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg); scrollbar-width: thin; }
