@@ -10,7 +10,7 @@ export default async function handler(request, response) {
 
     // Prendi la API Key dalle variabili d'ambiente di Vercel (più sicuro!)
     const GOOGLE_API_KEY = process.env.MY_GOOGLE_AI_API_KEY; // Useremo questo nome per la variabile d'ambiente
-    const MODEL_NAME = "gemini-1.0-pro-latest";
+    const MODEL_NAME = "gemini-pro";
 
     if (!GOOGLE_API_KEY) {
         console.error("Google AI API Key non è configurata sul server (variabile d'ambiente MY_GOOGLE_AI_API_KEY).");
