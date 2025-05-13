@@ -46,7 +46,7 @@ export default async function handler(request, response) {
         ],
     };
 
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GOOGLE_API_KEY}`;
+   const endpoint = `https://generativelanguage.googleapis.com/v1/models/${MODEL_NAME}:generateContent?key=${GOOGLE_API_KEY}`;
 
     try {
         const apiRes = await fetch(endpoint, {
