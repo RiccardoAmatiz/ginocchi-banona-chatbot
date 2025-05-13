@@ -146,8 +146,22 @@
       </div>
     </section>
 
-    <div class="chat-section"> <div id="command-suggestion"></div> <div class="chat-container"> <iframe id="chatbot-iframe" src="https://www.chatbase.co/chatbot-iframe/MQegvtSzp_7SHGSbf1lS8"></iframe> </div> </div>
-  </div>
+  <div class="chat-section">
+    <!-- Rimuoviamo command-suggestion per ora, lo gestiremo diversamente -->
+    <div class="chat-container" id="nostro-chat-container"> <!-- Aggiunto ID -->
+        <div id="chat-header-dinamico">
+            <!-- Il nome del personaggio con cui si chatta apparirà qui -->
+            <h2>Parla con... (seleziona un Ginocchio)</h2>
+        </div>
+        <div id="chat-messages">
+            <!-- Qui appariranno i messaggi della chat -->
+        </div>
+        <div id="chat-input-area">
+            <input type="text" id="message-input" placeholder="Scrivi il tuo messaggio...">
+            <button id="send-button">Invia</button>
+        </div>
+    </div>
+</div>
 
   <footer> <div class="container"> <img class="main-logo" id="logo-bottom" src="logo%20corretto%20orizzontale%20scontornato%20invertito.png" alt="Logo Ginocchi"> <p>© 2024 Ginocchi. Don't blame us if they hurt your feelings.</p> </div> </footer>
 
