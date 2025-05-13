@@ -28,23 +28,48 @@ export default async function handler(request, response) {
     // Gemini si aspetta un array 'contents' per la cronologia
     // e un oggetto 'system_instruction' per il prompt di sistema.
 
-    const payload = {
-        contents: currentConversationHistory, // La cronologia inviata dal frontend
-        system_instruction: {
-            role: "user", // Gemini per system_instruction accetta un oggetto con role e parts
-            parts: [{ text: systemPromptContent }]
-        },
-        generationConfig: {
-            temperature: 0.85,
-            // maxOutputTokens: 180, // Puoi configurarlo se necessario
-        },
-        safetySettings: [ // Le stesse safety settings che usavamo prima
-            { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
-            { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
-            { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
-            { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
-        ],
-    };
+    // DENTRO api/chat.js
+
+// Prepara i contenuti per l'API di Google
+// Il system prompt va come primo elemento dell'array contents
+let apiContents = [];
+
+if (systemPromptContent) {
+    // Aggiungiamo il system prompt come il primo messaggio "user"
+    // L'API di Gemini spesso tratta il primo messaggio user in un contesto di chat
+    // come una direttiva di sistema o un'istruzione di alto livello.
+    // In alternativa, alcuni modelli supportano un "role: system", ma "user" per il primo è più comune per generateContent.
+    apiContents.push({
+        role: "user", // Oppure potresti provare "system" se supportato, ma "user" è più sicuro per generateContent
+        parts: [{ text: systemPromptContent }]
+    });
+    // È buona pratica aggiungere una risposta fittizia del modello al system prompt
+    // per stabilire il contesto della chat.
+    apiContents.push({
+        role: "model",
+        parts: [{ text: "Ok, ho capito il mio ruolo e come devo comportarmi." }] // Puoi personalizzare questo messaggio
+    });
+}
+
+// Aggiungi il resto della cronologia della conversazione
+// currentConversationHistory dovrebbe essere un array di oggetti {role: "user"|"model", parts: [{text: "..."}]}
+apiContents = apiContents.concat(currentConversationHistory);
+
+
+const payload = {
+    contents: apiContents, // Ora 'contents' include il system prompt all'inizio, seguito dalla cronologia
+    // RIMUOVI LA CHIAVE "system_instruction" DA QUI
+    generationConfig: {
+        temperature: 0.85,
+        // maxOutputTokens: 180,
+    },
+    safetySettings: [
+        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
+    ],
+};
 
 const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GOOGLE_API_KEY}`;
     try {
