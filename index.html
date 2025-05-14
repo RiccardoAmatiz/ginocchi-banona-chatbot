@@ -10,10 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&family=Rubik:wght@700&display=swap" rel="stylesheet">
 
   <style>
+<style>
     :root {
       /* Palette Colori */
       --bg-color: #0E1128;
-      --card-bg-color: #0A151A;
+      --card-bg-color: #0A151A; /* Usato per header, footer, sezioni */
       --primary-text-color: #E4FDE0;
       --secondary-text-color: #A8D7C7;
       --accent-color: #5E9194; /* Colore Accento Principale (Teal) */
@@ -31,160 +32,131 @@
       --categoria-fruttato-text: #E4FDE0;
       --categoria-speziato-bg: #4A7F9E;   /* Blu */
       --categoria-speziato-text: #E4FDE0;
+      /* Colori Chat */
+      --user-message-bg: #005C4B; /* Verde scuro WhatsApp per utente */
+      --user-message-text: white;
+      --bot-message-bg: #202C33; /* Grigio scuro WhatsApp per bot */
+      --bot-message-text: #E9EDEF;
+      --chat-input-bg: #1f2c34; /* Sfondo input area simile a WhatsApp */
+      --chat-placeholder-text: #8696A0;
     }
-#chat-header-dinamico {
-    padding: 10px 15px;
-    background-color: rgba(0,0,0,0.2); /* Sfondo leggermente scuro per l'header chat */
-    border-bottom: 1px solid var(--border-color);
-    display: flex; /* Per allineare avatar e testo */
-    align-items: center; /* Allinea verticalmente avatar e testo */
-}
 
-#chat-header-dinamico h2 {
-    margin: 0; /* Rimuovi margini di default dall'h2 */
-    font-size: 1.2em; /* Dimensione testo header chat */
-    color: var(--primary-text-color);
-}
+    html {
+      box-sizing: border-box;
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg);
+      scrollbar-width: thin;
+    }
 
-#chat-messages {
-    height: calc(65vh - 120px); /* Altezza dinamica meno header e input area */
-    min-height: 380px; /* Altezza minima per consistenza */
-    border: none; /* Rimuoviamo il bordo precedente se c'era */
-    padding: 15px; /* Più padding interno */
-    overflow-y: auto;
-    background-color: transparent; /* Lo sfondo sarà sul .chat-container */
-    display: flex;
-    flex-direction: column; /* Mantiene i messaggi in colonna */
-}
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
 
-/* Stile base per tutte le nuvolette */
-.message {
-    padding: 10px 15px;
-    border-radius: 18px; /* Bordi più arrotondati per nuvolette */
-    margin-bottom: 10px;
-    max-width: 75%; /* Larghezza massima della nuvoletta */
-    word-wrap: break-word;
-    line-height: 1.4;
-    position: relative; /* Per eventuali "code" delle nuvolette (più avanzato) */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
+    body {
+      background-color: var(--bg-color);
+      color: var(--primary-text-color);
+      font-family: 'Roboto Mono', monospace;
+      margin: 0;
+      padding: 0; /* Rimosso padding globale dal body */
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh; /* Assicura che il body occupi almeno tutta l'altezza della finestra */
+      line-height: 1.6;
+    }
 
-.user-message {
-    background-color: #005C4B; /* Verde scuro WhatsApp per utente */
-    color: white;
-    align-self: flex-end; /* Allinea a destra */
-    border-bottom-right-radius: 5px; /* Angolo meno arrotondato per la "coda" */
-    margin-left: auto; /* Spinge a destra */
-}
+    body::-webkit-scrollbar { width: 10px; }
+    body::-webkit-scrollbar-track { background: var(--scrollbar-bg); }
+    body::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 6px; border: 2px solid var(--scrollbar-bg); }
+    body::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover); }
 
-.bot-message {
-    background-color: #202C33; /* Grigio scuro WhatsApp per bot */
-    color: #E9EDEF; /* Testo leggermente più chiaro per bot */
-    align-self: flex-start; /* Allinea a sinistra */
-    border-bottom-left-radius: 5px; /* Angolo meno arrotondato per la "coda" */
-    margin-right: auto; /* Spinge a sinistra */
-}
+    .container {
+      width: 100%;
+      max-width: 1100px; /* Larghezza massima del contenuto principale */
+      margin: 0 auto;
+      padding: 0 1.5rem; /* Padding laterale per il contenuto */
+    }
 
-/* Stile per i messaggi di errore/sistema (opzionale) */
-.bot-message.error, .bot-message.system-info {
-    background-color: #5c0000; /* Rosso scuro per errori */
-    color: white;
-    align-self: center; /* Centrato */
-    max-width: 90%;
-    text-align: center;
-    font-size: 0.9em;
-}
-.bot-message.system-info {
-    background-color: var(--accent-color);
-    color: var(--card-bg-color);
-}
+    header {
+      background-color: var(--card-bg-color);
+      padding: 2rem 0; /* Padding verticale */
+      /* margin-bottom: 2.5rem; // Rimosso, lo spazio sarà gestito dal main-content */
+      border-bottom: 2px solid var(--border-color);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+      width: 100%; /* Occupa tutta la larghezza */
+    }
+    /* Applica .container all'interno di header per centrare il contenuto */
+    header .container {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
 
 
-#chat-input-area {
-    display: flex;
-    padding: 10px 15px;
-    border-top: 1px solid var(--border-color);
-    background-color: rgba(0,0,0,0.1);
-}
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
 
-#message-input {
-    flex-grow: 1;
-    padding: 12px 15px;
-    border: 1px solid var(--border-color);
-    border-radius: 20px; /* Input più arrotondato */
-    background-color: #2A3942; /* Sfondo input area WhatsApp */
-    color: var(--primary-text-color);
-    font-family: 'Roboto Mono', monospace;
-    font-size: 1rem;
-    margin-right: 10px;
-}
-#message-input::placeholder {
-    color: #8696A0; /* Colore placeholder */
-}
+    .main-logo {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      max-height: 160px;
+      min-height: 80px;
+      width: auto;
+      vertical-align: middle;
+    }
+    #logo-top { margin-bottom: 1.5rem; filter: drop-shadow(0 0 5px rgba(94, 145, 148, 0.4)); }
+    #logo-bottom { margin-bottom: 1rem; opacity: 0.8; }
 
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      font-family: 'Rubik', sans-serif;
+      color: var(--primary-text-color);
+      margin: 0;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    }
 
-#send-button {
-    padding: 10px 18px;
-    background-color: var(--accent-color); /* Usa il colore accento */
-    color: var(--bg-color); /* Testo scuro per contrasto */
-    border: none;
-    border-radius: 50%; /* Bottone invio rotondo */
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-#send-button:hover {
-    background-color: #7FBABF; /* Versione più chiara dell'accento in hover */
-}
-/* Potresti voler usare un'icona SVG per il pulsante invio al posto del testo */
-/* Per ora lasciamo il testo "Invia" */
+    #header-banner {
+      display: block;
+      width: 100%;
+      max-width: 750px;
+      height: auto;
+      margin: 0 auto 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--border-color);
+    }
 
+    header .description {
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--secondary-text-color);
+      text-align: center;
+    }
 
-/* Stile per il thumbnail del personaggio attivo nella griglia */
-.ginocchio-thumbnail.active-thumbnail {
-    box-shadow: 0 0 12px 3px var(--accent-color);
-    transform: scale(1.15);
-    background-color: rgba(94, 145, 148, 0.3) !important;
-    border-color: var(--accent-color) !important; /* Assicurati che il bordo sia visibile */
-}
-.ginocchio-thumbnail.active-thumbnail img {
-    border-color: #fff; /* Bordo bianco per l'immagine del personaggio attivo */
-}
+    .main-content {
+      flex: 1; /* Dice al main-content di occupare tutto lo spazio verticale disponibile */
+      padding-top: 2.5rem; /* Spazio sopra la galleria */
+      padding-bottom: 2.5rem; /* Spazio sotto la chat, prima del footer */
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem; /* Spazio tra la galleria e la sezione chat */
+    }
 
-/* Miglioramenti generali (opzionali) */
-.container {
-    padding: 0 1.5rem; /* Più padding laterale per il container principale */
-}
-#ginocchi-grid {
-    gap: 1.5rem; /* Più spazio tra le icone */
-}
-.ginocchio-thumbnail {
-    padding: 0.75rem; /* Più padding interno per le thumbnail */
-}
-.ginocchio-thumbnail img {
-    width: 75px; /* Immagini thumbnail leggermente più grandi */
-    height: 75px;
-}
-.ginocchio-thumbnail span {
-    font-size: 0.8rem;
-}
-    html { box-sizing: border-box; } *, *:before, *:after { box-sizing: inherit; }
-    body { background-color: var(--bg-color); color: var(--primary-text-color); font-family: 'Roboto Mono', monospace; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; line-height: 1.6; }
-    body::-webkit-scrollbar { width: 10px; } body::-webkit-scrollbar-track { background: var(--scrollbar-bg); } body::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 6px; border: 2px solid var(--scrollbar-bg); } body::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover); } html { scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg); scrollbar-width: thin; }
-    .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
-    header { background-color: var(--card-bg-color); padding: 2rem 0; margin-bottom: 2.5rem; border-bottom: 2px solid var(--border-color); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4); }
-    .header-content { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2rem; }
-    .main-logo { display: block; margin-left: auto; margin-right: auto; max-height: 160px; min-height: 80px; width: auto; vertical-align: middle; }
-    #logo-top { margin-bottom: 1.5rem; filter: drop-shadow(0 0 5px rgba(94, 145, 148, 0.4)); } #logo-bottom { margin-bottom: 1rem; opacity: 0.8; }
-    h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); font-family: 'Rubik', sans-serif; color: var(--primary-text-color); margin: 0; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6); }
-    #header-banner { display: block; width: 100%; max-width: 750px; height: auto; margin: 0 auto 2rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); border: 1px solid var(--border-color); }
-    header .description { font-size: 1.1rem; max-width: 700px; margin: 0 auto; color: var(--secondary-text-color); text-align: center; }
-    .main-content { flex: 1; padding-bottom: 3rem; position: relative; }
-    #ginocchi-gallery-section { margin-bottom: 2.5rem; padding: 1.5rem; background-color: var(--card-bg-color); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); }
+    #ginocchi-gallery-section {
+      /* margin-bottom: 2.5rem; // Rimosso, gestito dal gap del .main-content */
+      padding: 1.5rem;
+      background-color: var(--card-bg-color);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
     #ginocchi-gallery-section h2 { font-family: 'Rubik', sans-serif; text-align: center; color: var(--accent-color); margin-top: 0; margin-bottom: 1rem; }
+
     #category-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
     .filter-btn { padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); background-color: var(--card-bg-color); color: var(--secondary-text-color); cursor: pointer; border-radius: 20px; font-family: 'Roboto Mono', monospace; font-size: 0.9rem; font-weight: bold; transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.1s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
     .filter-btn:hover { background-color: rgba(94, 145, 148, 0.1); border-color: var(--accent-color); color: var(--primary-text-color); transform: translateY(-1px); }
@@ -193,21 +165,175 @@
     .filter-btn[data-categoria="Fruttato"].active { background-color: var(--categoria-fruttato-bg); color: var(--categoria-fruttato-text); border-color: var(--categoria-fruttato-bg); box-shadow: 0 0 8px var(--categoria-fruttato-bg); }
     .filter-btn[data-categoria="Speziato"].active { background-color: var(--categoria-speziato-bg); color: var(--categoria-speziato-text); border-color: var(--categoria-speziato-bg); box-shadow: 0 0 8px var(--categoria-speziato-bg); }
     .filter-btn[data-categoria="tutti"].active { background-color: var(--accent-color); color: var(--bg-color); border-color: var(--accent-color); box-shadow: 0 0 8px var(--accent-color); }
-    #ginocchio-filter { display: block; width: 100%; max-width: 400px; margin: 0 auto 1.5rem; padding: 0.75rem 1rem; background-color: var(--bg-color); color: var(--primary-text-color); border: 1px solid var(--border-color); border-radius: 6px; font-family: 'Roboto Mono', monospace; font-size: 1rem; } #ginocchio-filter::placeholder { color: var(--secondary-text-color); opacity: 0.7; }
-    #ginocchi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 1rem; justify-content: center; }
-    .ginocchio-thumbnail { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; transition: transform 0.2s ease-in-out, filter 0.2s ease, background-color 0.2s ease; background-color: rgba(255, 255, 255, 0.03); padding: 0.5rem; border-radius: 8px; }
+
+    #ginocchio-filter { display: block; width: 100%; max-width: 400px; margin: 0 auto 1.5rem; padding: 0.75rem 1rem; background-color: var(--bg-color); color: var(--primary-text-color); border: 1px solid var(--border-color); border-radius: 6px; font-family: 'Roboto Mono', monospace; font-size: 1rem; }
+    #ginocchio-filter::placeholder { color: var(--secondary-text-color); opacity: 0.7; }
+
+    #ginocchi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 1.5rem; justify-content: center; }
+    .ginocchio-thumbnail { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; transition: transform 0.2s ease-in-out, filter 0.2s ease, background-color 0.2s ease; background-color: rgba(255, 255, 255, 0.03); padding: 0.75rem; border-radius: 8px; }
     .ginocchio-thumbnail:hover { transform: scale(1.1); filter: brightness(1.2); background-color: rgba(94, 145, 148, 0.2); }
-    .ginocchio-thumbnail img { width: 70px; height: 70px; object-fit: cover; border-radius: 50%; border: 2px solid var(--accent-color); margin-bottom: 0.5rem; }
-    .ginocchio-thumbnail span { font-size: 0.75rem; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+    .ginocchio-thumbnail img { width: 75px; height: 75px; object-fit: cover; border-radius: 50%; border: 2px solid var(--accent-color); margin-bottom: 0.5rem; }
+    .ginocchio-thumbnail span { font-size: 0.8rem; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+    .ginocchio-thumbnail.active-thumbnail { box-shadow: 0 0 12px 3px var(--accent-color); transform: scale(1.15); background-color: rgba(94, 145, 148, 0.3) !important; border-color: var(--accent-color) !important; }
+    .ginocchio-thumbnail.active-thumbnail img { border-color: #fff; }
+
     .hidden-by-category, .hidden-by-name { display: none !important; }
-    .chat-section { position: relative; }
-    .chat-container { background-color: var(--card-bg-color); margin: 0 auto; width: 100%; max-width: 800px; height: 65vh; min-height: 500px; max-height: 700px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6); }
-    iframe { width: 100%; height: 100%; border: none; }
-    #command-suggestion { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background-color: var(--accent-color); color: var(--bg-color); padding: 0.5rem 1rem; border-radius: 6px 6px 0 0; font-size: 0.9rem; z-index: 10; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; white-space: nowrap; box-shadow: 0 -2px 5px rgba(0,0,0,0.3); }
-    #command-suggestion.visible { opacity: 1; visibility: visible; } #command-suggestion code { background-color: rgba(0,0,0,0.2); padding: 0.1em 0.4em; border-radius: 3px; font-weight: bold; }
-    footer { background-color: var(--card-bg-color); margin-top: auto; padding: 2rem 1rem; border-top: 2px solid var(--border-color); text-align: center; }
-    footer p { font-size: 0.85rem; color: var(--secondary-text-color); margin-top: 1rem; opacity: 0.7; }
-  </style>
+
+
+    /* SEZIONE CHAT MODIFICATA */
+    .chat-section {
+        /* position: relative; // Non più necessario se command-suggestion è rimosso */
+        /* Il container della chat prenderà lo spazio rimanente nel .main-content flex item */
+    }
+
+    .chat-container {
+      background-color: var(--card-bg-color);
+      margin: 0 auto; /* Già centrato dal .container del .main-content */
+      width: 100%;
+      max-width: 800px; /* Mantiene la larghezza massima */
+      display: flex; /* NUOVO: per organizzare header, messaggi, input */
+      flex-direction: column; /* NUOVO: elementi in colonna */
+      height: 65vh; /* Altezza desiderata per la chat box */
+      min-height: 500px; /* Minimo per non diventare troppo piccola */
+      max-height: 700px; /* Massimo per non diventare troppo grande */
+      border-radius: 12px;
+      overflow: hidden; /* Nasconde lo scrollbar di #chat-messages se non serve */
+      border: 1px solid var(--border-color);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    #chat-header-dinamico {
+        padding: 12px 18px; /* Aumentato padding */
+        background-color: rgba(0,0,0,0.25);
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        flex-shrink: 0; /* Impedisce all'header di restringersi */
+    }
+    #chat-header-dinamico img#chat-avatar-ginocchio { /* Stile per l'avatar già definito nell'HTML, ma puoi affinarlo qui */
+        margin-right: 12px; /* Più spazio tra avatar e nome */
+    }
+    #chat-header-dinamico h2 {
+        margin: 0;
+        font-size: 1.2em;
+        color: var(--primary-text-color);
+        font-family: 'Rubik', sans-serif; /* Font più leggibile per l'header */
+    }
+
+    #chat-messages {
+      flex-grow: 1; /* Dice all'area messaggi di prendere lo spazio rimanente */
+      padding: 15px;
+      overflow-y: auto; /* Scroll solo se necessario */
+      background-color: transparent; /* Sfondo trasparente, il colore viene da .chat-container */
+      display: flex;
+      flex-direction: column;
+      gap: 8px; /* Spazio tra le nuvolette */
+    }
+
+    .message {
+      padding: 10px 15px;
+      border-radius: 18px;
+      /* margin-bottom: 10px; // Rimosso, usiamo gap su #chat-messages */
+      max-width: 75%;
+      word-wrap: break-word;
+      line-height: 1.45; /* Aumentata leggibilità */
+      position: relative;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .user-message {
+      background-color: var(--user-message-bg);
+      color: var(--user-message-text);
+      align-self: flex-end;
+      border-bottom-right-radius: 6px; /* Angolo per la "coda" */
+      margin-left: auto;
+    }
+
+    .bot-message {
+      background-color: var(--bot-message-bg);
+      color: var(--bot-message-text);
+      align-self: flex-start;
+      border-bottom-left-radius: 6px; /* Angolo per la "coda" */
+      margin-right: auto;
+    }
+
+    .bot-message.error, .bot-message.system-info {
+        background-color: #7c221c; /* Rosso più scuro e meno invadente */
+        color: #fde0e0;
+        align-self: center;
+        max-width: 90%;
+        text-align: center;
+        font-size: 0.9em;
+        border-radius: 6px; /* Angoli più squadrati per messaggi di sistema */
+        padding: 8px 12px;
+    }
+    .bot-message.system-info { /* Per messaggi di sistema non di errore */
+        background-color: var(--accent-color);
+        color: var(--card-bg-color);
+    }
+
+
+    #chat-input-area {
+      display: flex;
+      padding: 12px 15px; /* Aumentato padding */
+      border-top: 1px solid var(--border-color);
+      background-color: var(--chat-input-bg); /* Sfondo per l'area input */
+      flex-shrink: 0; /* Impedisce all'area input di restringersi */
+    }
+
+    #message-input {
+      flex-grow: 1;
+      padding: 12px 18px; /* Aumentato padding interno */
+      border: none; /* Rimosso bordo, si fonde con l'area */
+      border-radius: 22px;
+      background-color: #2a3942; /* Sfondo input simile a WhatsApp */
+      color: var(--primary-text-color);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 1rem;
+      margin-right: 10px;
+    }
+    #message-input::placeholder { color: var(--chat-placeholder-text); }
+
+    #send-button {
+      padding: 0; /* Rimuovi padding se usi icona */
+      width: 44px; /* Dimensione fissa per cerchio */
+      height: 44px;
+      background-color: var(--accent-color);
+      color: var(--bg-color);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem; /* Per il testo "Invia" se lo tieni */
+    }
+    #send-button:hover { background-color: #7FBABF; }
+    /* Per un'icona SVG (esempio, dovrai trovare/creare un'icona)
+    #send-button svg { width: 24px; height: 24px; fill: var(--bg-color); }
+    */
+
+    /* Rimosso #command-suggestion e il suo stile perché non lo usiamo più */
+
+    footer {
+      background-color: var(--card-bg-color);
+      /* margin-top: auto; // Flexbox sul body si occupa di questo */
+      padding: 2rem 0; /* Padding verticale */
+      border-top: 2px solid var(--border-color);
+      text-align: center;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    /* Applica .container all'interno di footer per centrare il contenuto */
+    footer .container {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    footer p { font-size: 0.85rem; color: var(--secondary-text-color); margin: 0; opacity: 0.7; } /* Rimosso margin-top */
+
+</style>
 </head>
 <body>
 
