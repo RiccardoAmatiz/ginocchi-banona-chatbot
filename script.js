@@ -303,21 +303,17 @@ const personaggiData = {
     }
 };
 
-// Elementi del DOM
-const chatHeaderContainer = document.getElementById('chat-header-dinamico');
-const chatHeaderH2 = chatHeaderContainer?.querySelector('h2');
-const chatAvatarGinocchio = document.getElementById('chat-avatar-ginocchio');
-const chatMessagesContainer = document.getElementById('chat-messages');
-const messageInput = document.getElementById('message-input');
-const sendButton = document.getElementById('send-button');
+// Variabili per gli elementi DOM - verranno assegnate in DOMContentLoaded
+let chatHeaderContainer, chatHeaderH2, chatAvatarGinocchio, chatMessagesContainer, messageInput, sendButton;
+let filterInput, grid, categoryButtons, thumbnails;
 
 // Variabili per lo stato della chat
 let activeCharacterId = null;
 let conversationHistory = [];
 
 function displayMessage(text, className) {
-    if (!chatMessagesContainer) {
-        // console.error("Contenitore messaggi chat non trovato!"); // Potrebbe essere troppo presto nel DOMContentLoaded
+    if (!chatMessagesContainer) { // Aggiunto controllo per sicurezza se chiamata troppo presto
+        console.warn("displayMessage chiamata prima che chatMessagesContainer sia inizializzato.");
         return;
     }
     const messageDiv = document.createElement('div');
@@ -328,6 +324,7 @@ function displayMessage(text, className) {
 }
 
 function selectCharacter(charId) {
+    // Queste variabili DOM dovrebbero essere già inizializzate da DOMContentLoaded
     if (!personaggiData[charId]) {
         console.error("Dati personaggio non trovati per ID:", charId);
         displayMessage(`Dati per "${charId}" non trovati.`, 'bot-message error');
@@ -341,7 +338,8 @@ function selectCharacter(charId) {
     if(chatMessagesContainer) chatMessagesContainer.innerHTML = '';
 
     const activeCharData = personaggiData[activeCharacterId];
-    const thumbImageElement = document.querySelector(`.ginocchio-thumbnail[data-nome="${charId}"] img`);
+    // thumbnails è definito nel DOMContentLoaded, qui dovrebbe essere accessibile
+    const thumbImageElement = grid?.querySelector(`.ginocchio-thumbnail[data-nome="${charId}"] img`); // Cerca dentro la griglia
 
     if (chatHeaderH2) {
         chatHeaderH2.textContent = activeCharData.nomeMostrato;
@@ -353,14 +351,20 @@ function selectCharacter(charId) {
         chatAvatarGinocchio.style.display = 'inline-block';
     } else {
         if(chatAvatarGinocchio) chatAvatarGinocchio.style.display = 'none';
-        if(chatHeaderH2 && !thumbImageElement) chatHeaderH2.textContent = `Parla con ${activeCharData.nomeMostrato}`;
+        if(chatHeaderH2 && (!thumbImageElement || !thumbImageElement.src)) {
+             chatHeaderH2.textContent = `Parla con ${activeCharData.nomeMostrato}`;
+        }
+        if (!thumbImageElement) console.warn(`Thumbnail <img> non trovato per ${charId} all'interno della griglia.`);
+        else if (thumbImageElement && !thumbImageElement.src) console.warn(`Thumbnail <img> trovato per ${charId}, ma src è vuoto.`);
     }
     console.log(`Chat pronta per ${activeCharData.nomeMostrato}`);
 }
 
-
 async function sendMessageToAI() {
-    if (!messageInput || !sendButton) return;
+    if (!messageInput || !sendButton) {
+        console.error("Elementi input o sendButton non trovati in sendMessageToAI");
+        return;
+    }
     const userMessageText = messageInput.value.trim();
     if (!userMessageText) return;
 
@@ -417,28 +421,37 @@ async function sendMessageToAI() {
     }
 }
 
-if (sendButton) sendButton.addEventListener('click', sendMessageToAI);
-if (messageInput) messageInput.addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
-        sendMessageToAI();
-    }
-});
 
 document.addEventListener('DOMContentLoaded', function() {
-    const filterInput = document.getElementById('ginocchio-filter');
-    const grid = document.getElementById('ginocchi-grid');
-    const categoryButtons = document.querySelectorAll('#category-filters .filter-btn');
+    // ASSEGNA GLI ELEMENTI DOM ALLE VARIABILI GLOBALI QUI
+    chatHeaderContainer = document.getElementById('chat-header-dinamico');
+    chatHeaderH2 = chatHeaderContainer?.querySelector('h2');
+    chatAvatarGinocchio = document.getElementById('chat-avatar-ginocchio');
+    chatMessagesContainer = document.getElementById('chat-messages');
+    messageInput = document.getElementById('message-input');
+    sendButton = document.getElementById('send-button');
 
-    // È importante che gli elementi della chat siano già definiti globalmente
-    // O ridefinirli qui se si preferisce uno scope locale per questa parte.
-    // Per coerenza con le funzioni globali, usiamo quelli globali, ma controlliamo che esistano.
-    if (!filterInput || !grid || !categoryButtons.length || !chatHeaderH2 || !chatAvatarGinocchio || !chatMessagesContainer || !messageInput || !sendButton) {
-        console.error("Uno o più Elementi DOM essenziali (filtri, griglia, o elementi chat) non trovati all'avvio del DOMContentLoaded.");
-        // Non vogliamo bloccare tutto, solo avvisare.
+    filterInput = document.getElementById('ginocchio-filter');
+    grid = document.getElementById('ginocchi-grid'); // Assicurati che l'ID sia corretto nell'HTML
+    categoryButtons = document.querySelectorAll('#category-filters .filter-btn');
+
+    // Controlli di esistenza (importanti!)
+    if (!filterInput || !grid || !categoryButtons.length || !chatHeaderContainer || !chatHeaderH2 || !chatAvatarGinocchio || !chatMessagesContainer || !messageInput || !sendButton) {
+        console.error("CRITICO: Uno o più Elementi DOM essenziali non sono stati trovati! Verifica gli ID nel tuo HTML e nello script.");
+        alert("Errore critico nell'inizializzazione della pagina. La chat non funzionerà.");
+        return;
     }
 
-    const thumbnails = grid.querySelectorAll('.ginocchio-thumbnail');
+    thumbnails = grid.querySelectorAll('.ginocchio-thumbnail'); // Ora 'grid' è sicuramente definito
     let activeCategory = 'tutti';
+
+    // ATTACCA GLI EVENT LISTENER QUI, DOPO CHE GLI ELEMENTI SONO STATI ASSEGNATI
+    if (sendButton) sendButton.addEventListener('click', sendMessageToAI);
+    if (messageInput) messageInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            sendMessageToAI();
+        }
+    });
 
     categoryButtons.forEach(btn => {
         if (btn.dataset.categoria === 'tutti') btn.classList.add('active');
@@ -460,7 +473,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function applyFilters() {
-        if (!thumbnails.length || !filterInput) return;
+        if (!thumbnails || !thumbnails.length || !filterInput) {
+            return;
+        }
         const nameFilterText = filterInput.value.toLowerCase().trim();
         thumbnails.forEach(function(thumb) {
             const nomeGinocchioDataAttr = thumb.getAttribute('data-nome');
@@ -492,6 +507,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    applyFilters();
+
+    applyFilters(); // Applica filtri all'avvio
 });
 // Fine del file script.js
