@@ -309,6 +309,7 @@ const personaggiData = {
 
 // Elementi del DOM
 const chatHeaderDinamico = document.getElementById('chat-header-dinamico')?.querySelector('h2');
+const chatAvatarGinocchio = document.getElementById('chat-avatar-ginocchio'); // Aggiunto per l'avatar
 const chatMessagesContainer = document.getElementById('chat-messages');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
@@ -328,19 +329,36 @@ function displayMessage(text, className) {
 
 function selectCharacter(charId) {
     if (!personaggiData[charId]) {
-        console.error("Dati personaggio non trovati per ID:", charId);
+        console.error("Dati personaggio non trovati per ID:", charId, ". Controlla `data-nome` nell'HTML e le chiavi in `personaggiData`.");
         displayMessage(`Dati per "${charId}" non trovati.`, 'bot-message error');
-        if(chatHeaderDinamico) chatHeaderDinamico.textContent = `Parla con... (Errore!)`;
+        if(chatHeaderH2) chatHeaderH2.textContent = `Parla con... (Errore!)`; // Modificato per usare chatHeaderH2
+        if(chatAvatarGinocchio) chatAvatarGinocchio.style.display = 'none';
         activeCharacterId = null;
         return;
     }
     activeCharacterId = charId;
-    conversationHistory = []; // Resetta la storia per il nuovo personaggio
+    conversationHistory = [];
     if(chatMessagesContainer) chatMessagesContainer.innerHTML = '';
+
     const activeCharData = personaggiData[activeCharacterId];
-    if(chatHeaderDinamico) chatHeaderDinamico.textContent = `Parla con ${activeCharData.nomeMostrato}`;
+    const thumbImageElement = document.querySelector(`.ginocchio-thumbnail[data-nome="${charId}"] img`);
+
+    // Aggiorna header chat con nome e avatar
+    if (chatAvatarGinocchio && thumbImageElement && thumbImageElement.src) {
+        chatAvatarGinocchio.src = thumbImageElement.src;
+        chatAvatarGinocchio.alt = activeCharData.nomeMostrato;
+        chatAvatarGinocchio.style.display = 'inline-block';
+        if(chatHeaderH2) chatHeaderH2.textContent = activeCharData.nomeMostrato; // Usiamo la variabile definita globalmente
+        console.log(`Avatar impostato per ${charId} con src: ${thumbImageElement.src}`);
+    } else {
+        if(chatAvatarGinocchio) chatAvatarGinocchio.style.display = 'none';
+        if(chatHeaderH2) chatHeaderH2.textContent = `Parla con ${activeCharData.nomeMostrato}`;
+        if (!thumbImageElement) console.warn(`Thumbnail <img> non trovato per ${charId}.`);
+        else if (thumbImageElement && !thumbImageElement.src) console.warn(`Thumbnail <img> trovato per ${charId}, ma src è vuoto.`);
+    }
     console.log(`Chat pronta per ${activeCharData.nomeMostrato}`);
 }
+
 
 async function sendMessageToAI() {
     if (!messageInput || !sendButton) return;
@@ -353,7 +371,7 @@ async function sendMessageToAI() {
     }
 
     displayMessage(userMessageText, 'user-message');
-    const tempUserMessage = messageInput.value;
+    const tempUserMessage = messageInput.value; // Salva il messaggio prima di pulire l'input
     messageInput.value = '';
     messageInput.disabled = true;
     sendButton.disabled = true;
@@ -371,34 +389,32 @@ async function sendMessageToAI() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                currentConversationHistory: historyToSendToServer, // Invia la cronologia aggiornata
-                systemPromptContent: activeCharData.systemPrompt  // Invia il system prompt specifico
+                currentConversationHistory: historyToSendToServer,
+                systemPromptContent: activeCharData.systemPrompt
             }),
         });
 
-        const data = await res.json();
+        const data = await res.json(); // Prova sempre a parsare il JSON
 
         if (!res.ok) {
-            console.error("Errore dal proxy backend:", data);
+            console.error("Errore dal proxy backend:", data); // Logga l'errore JSON dal backend
             let displayError = data.error || "Errore sconosciuto dal server proxy.";
-            if (data.details) displayError += ` Dettagli: ${data.details}`;
+            if (data.details) displayError += ` Dettagli: ${data.details}`; // Aggiungi i dettagli se presenti
             displayMessage(displayError, 'bot-message error');
-            throw new Error(`Proxy request failed: ${displayError}`);
+            // Non fare throw new Error qui, altrimenti il blocco finally non si aggiorna correttamente
+            // e potresti avere un doppio messaggio di errore se il catch esterno viene attivato.
+            // Basta mostrare l'errore e abilitare l'input.
+        } else {
+            const botResponseText = data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] ? data.candidates[0].content.parts[0].text : "Il Ginocchio è rimasto senza parole...";
+            displayMessage(botResponseText, 'bot-message');
+
+            conversationHistory.push({ role: "user", parts: [{ text: tempUserMessage }] });
+            conversationHistory.push({ role: "model", parts: [{ text: botResponseText }] });
         }
 
-        const botResponseText = data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] ? data.candidates[0].content.parts[0].text : "Il Ginocchio è momentaneamente afono...";
-
-        displayMessage(botResponseText, 'bot-message');
-
-        // Aggiorna la cronologia LOCALE con il messaggio dell'utente e la risposta del bot
-        conversationHistory.push({ role: "user", parts: [{ text: tempUserMessage }] });
-        conversationHistory.push({ role: "model", parts: [{ text: botResponseText }] });
-
-    } catch (error) {
-        console.error("Errore durante la chiamata a sendMessageToAI:", error);
-        if (!document.querySelector('#chat-messages .message.error')) {
-            displayMessage(`Errore di comunicazione con ${activeCharData.nomeMostrato || 'il Ginocchio'}. Riprova.`, 'bot-message error');
-        }
+    } catch (error) { // Questo catch gestisce errori di rete o JSON non validi dalla fetch stessa
+        console.error("Errore di rete o parsing JSON durante la chiamata a sendMessageToAI:", error);
+        displayMessage(`Errore di comunicazione critico con ${activeCharData.nomeMostrato || 'il Ginocchio'}. Riprova.`, 'bot-message error');
     } finally {
         messageInput.disabled = false;
         sendButton.disabled = false;
@@ -406,6 +422,7 @@ async function sendMessageToAI() {
     }
 }
 
+// Event Listener per i pulsanti e la logica dei filtri (uguale a prima)
 if (sendButton) sendButton.addEventListener('click', sendMessageToAI);
 if (messageInput) messageInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
@@ -414,14 +431,23 @@ if (messageInput) messageInput.addEventListener('keypress', (event) => {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Recupero elementi DOM specifici per questa parte
     const filterInput = document.getElementById('ginocchio-filter');
     const grid = document.getElementById('ginocchi-grid');
     const categoryButtons = document.querySelectorAll('#category-filters .filter-btn');
+    // chatHeaderH2, chatAvatarGinocchio, chatMessagesContainer, messageInput, sendButton sono già definiti globalmente
 
-    if (!filterInput || !grid || !categoryButtons.length || !chatHeaderDinamico || !chatMessagesContainer || !messageInput || !sendButton) {
-        console.error("Uno o più Elementi DOM essenziali non trovati all'avvio.");
-        return;
+    if (!filterInput || !grid || !categoryButtons.length) {
+        console.error("Elementi DOM per filtri/galleria non trovati all'avvio.");
+        return; // Esce se mancano elementi cruciali per i filtri
     }
+    // Controlla se gli elementi della chat esistono (anche se sono globali, un controllo qui non fa male)
+    if (!chatHeaderH2 || !chatAvatarGinocchio || !chatMessagesContainer || !messageInput || !sendButton) {
+        console.error("Uno o più Elementi DOM della chat non trovati.");
+        // Non uscire completamente, i filtri potrebbero funzionare lo stesso.
+    }
+
+
     const thumbnails = grid.querySelectorAll('.ginocchio-thumbnail');
     let activeCategory = 'tutti';
 
@@ -460,17 +486,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const shouldBeVisible = isInActiveCategory && matchesName;
 
             if (shouldBeVisible) {
-                thumb.style.display = '';
+                thumb.style.display = ''; // Usa stringa vuota per resettare a default del CSS
                 thumb.classList.remove('hidden-by-category', 'hidden-by-name');
             } else {
                 thumb.style.display = 'none';
+                // Le classi hidden-by-category/name sono ancora utili se il CSS le usa
+                // per qualcosa di più del semplice display:none, altrimenti display:none è sufficiente.
             }
         });
     }
 
     thumbnails.forEach(function(thumb) {
         thumb.addEventListener('click', function() {
-            if (this.style.display === 'none') return;
+            if (this.style.display === 'none') return; // Non fare nulla se filtrato
             const charId = this.getAttribute('data-nome');
             if (charId) {
                 selectCharacter(charId);
@@ -480,6 +508,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    applyFilters();
+    applyFilters(); // Applica filtri all'avvio
 });
 // Fine del file script.js
