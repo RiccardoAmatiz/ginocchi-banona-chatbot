@@ -423,7 +423,7 @@ async function sendMessageToAI() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    // ASSEGNA GLI ELEMENTI DOM ALLE VARIABILI GLOBALI QUI
+  // ASSEGNA GLI ELEMENTI DOM ALLE VARIABILI GLOBALI QUI
     chatHeaderContainer = document.getElementById('chat-header-dinamico');
     chatHeaderH2 = chatHeaderContainer?.querySelector('h2');
     chatAvatarGinocchio = document.getElementById('chat-avatar-ginocchio');
@@ -435,12 +435,26 @@ document.addEventListener('DOMContentLoaded', function() {
     grid = document.getElementById('ginocchi-grid'); // Assicurati che l'ID sia corretto nell'HTML
     categoryButtons = document.querySelectorAll('#category-filters .filter-btn');
 
+    // ===== INIZIO BLOCCO DA INSERIRE/MODIFICARE =====
+    console.log("--- DEBUG INIZIALIZZAZIONE DOM ---");
+    console.log("filterInput:", filterInput);
+    console.log("grid:", grid);
+    console.log("categoryButtons:", categoryButtons, "Lunghezza:", categoryButtons?.length); // Aggiunto ? per length
+    console.log("chatHeaderContainer:", chatHeaderContainer);
+    console.log("chatHeaderH2:", chatHeaderH2);
+    console.log("chatAvatarGinocchio:", chatAvatarGinocchio);
+    console.log("chatMessagesContainer:", chatMessagesContainer);
+    console.log("messageInput:", messageInput);
+    console.log("sendButton:", sendButton);
+
     // Controlli di esistenza (importanti!)
-    if (!filterInput || !grid || !categoryButtons.length || !chatHeaderContainer || !chatHeaderH2 || !chatAvatarGinocchio || !chatMessagesContainer || !messageInput || !sendButton) {
-        console.error("CRITICO: Uno o più Elementi DOM essenziali non sono stati trovati! Verifica gli ID nel tuo HTML e nello script.");
-        alert("Errore critico nell'inizializzazione della pagina. La chat non funzionerà.");
-        return;
+    // Ho modificato leggermente la condizione per categoryButtons
+    if (!filterInput || !grid || (categoryButtons && categoryButtons.length === 0) || !chatHeaderContainer || !chatHeaderH2 || !chatAvatarGinocchio || !chatMessagesContainer || !messageInput || !sendButton) {
+        console.error("CRITICO: Uno o più Elementi DOM essenziali non sono stati trovati! Controlla i log sopra e verifica gli ID nel tuo HTML.");
+        // alert("Errore critico nell'inizializzazione della pagina. La chat potrebbe non funzionare."); // Lasciamo commentato l'alert per ora
+        // return; // <-- COMMENTA TEMPORANEAMENTE QUESTO RETURN PER VEDERE SE CI SONO ALTRI ERRORI DOPO
     }
+    console.log("--- FINE DEBUG INIZIALIZZAZIONE DOM (se non ci sono stati errori critici prima) ---");
 
     thumbnails = grid.querySelectorAll('.ginocchio-thumbnail'); // Ora 'grid' è sicuramente definito
     let activeCategory = 'tutti';
