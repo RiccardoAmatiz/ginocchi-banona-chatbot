@@ -182,7 +182,14 @@
     h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); font-family: 'Rubik', sans-serif; color: var(--primary-text-color); margin: 0; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6); }
     #header-banner { display: block; width: 100%; max-width: 750px; height: auto; margin: 0 auto 2rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); border: 1px solid var(--border-color); }
     header .description { font-size: 1.1rem; max-width: 700px; margin: 0 auto; color: var(--secondary-text-color); text-align: center; }
-    .main-content { flex: 1; padding-bottom: 3rem; position: relative; }
+    .main-content {
+  flex: 1 0 auto; /* Fa sì che il main-content cresca ma non meno del suo contenuto */
+  padding-top: 2.5rem; /* Spazio sopra la galleria, se vuoi */
+  padding-bottom: 4rem; /* AUMENTA QUESTO VALORE per più spazio SOPRA il footer */
+  display: flex; /* Aggiunto per gestire meglio gli spazi interni se necessario */
+  flex-direction: column; /* Per allineare sezioni interne verticalmente */
+  gap: 2.5rem; /* Spazio tra sezioni come galleria e chat */
+}
     #ginocchi-gallery-section { margin-bottom: 2.5rem; padding: 1.5rem; background-color: var(--card-bg-color); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); }
     #ginocchi-gallery-section h2 { font-family: 'Rubik', sans-serif; text-align: center; color: var(--accent-color); margin-top: 0; margin-bottom: 1rem; }
     #category-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
