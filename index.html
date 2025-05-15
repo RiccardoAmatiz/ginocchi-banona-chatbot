@@ -177,7 +177,15 @@
     .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
     header { background-color: var(--card-bg-color); padding: 2rem 0; margin-bottom: 2.5rem; border-bottom: 2px solid var(--border-color); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4); }
     .header-content { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2rem; }
-    .main-logo { display: block; margin-left: auto; margin-right: auto; max-height: 160px; min-height: 80px; width: auto; vertical-align: middle; }
+    .main-logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-height: 80px; /* << MODIFICA QUESTO VALORE */
+  /* min-height: 80px; // Puoi commentare o rimuovere min-height se max-height è sufficiente */
+  width: auto;
+  vertical-align: middle;
+}
     #logo-top { margin-bottom: 1.5rem; filter: drop-shadow(0 0 5px rgba(94, 145, 148, 0.4)); } #logo-bottom { margin-bottom: 1rem; opacity: 0.8; }
     h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); font-family: 'Rubik', sans-serif; color: var(--primary-text-color); margin: 0; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6); }
     #header-banner { display: block; width: 100%; max-width: 750px; height: auto; margin: 0 auto 2rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); border: 1px solid var(--border-color); }
