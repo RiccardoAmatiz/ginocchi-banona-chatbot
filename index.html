@@ -33,30 +33,53 @@
       --categoria-speziato-text: #E4FDE0;
     }
 #chat-header-dinamico {
-    padding: 10px 15px;
-    background-color: rgba(0,0,0,0.2); /* Sfondo leggermente scuro per l'header chat */
-    border-bottom: 1px solid var(--border-color);
-    display: flex; /* Per allineare avatar e testo */
-    align-items: center; /* Allinea verticalmente avatar e testo */
+  padding: 10px 15px; /* Leggermente ridotto per più spazio ai messaggi */
+  background-color: rgba(0,0,0,0.3); /* Sfondo più scuro per distinguere */
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0; /* NON DEVE RESTRINGERSI: mantiene la sua altezza */
+  /* z-index: 10; // Aggiunto se necessario per sovrapposizioni, ma flex dovrebbe gestire */
+}
+
+#chat-header-dinamico {
+  padding: 10px 15px; /* Leggermente ridotto per più spazio ai messaggi */
+  background-color: rgba(0,0,0,0.3); /* Sfondo più scuro per distinguere */
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0; /* NON DEVE RESTRINGERSI: mantiene la sua altezza */
+  /* z-index: 10; // Aggiunto se necessario per sovrapposizioni, ma flex dovrebbe gestire */
+}
+
+#chat-header-dinamico img#chat-avatar-ginocchio {
+  width: 40px; /* Avatar leggermente più piccolo */
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 1px solid var(--accent-color); /* Bordo più sottile */
 }
 
 #chat-header-dinamico h2 {
-    margin: 0; /* Rimuovi margini di default dall'h2 */
-    font-size: 1.2em; /* Dimensione testo header chat */
-    color: var(--primary-text-color);
+  margin: 0;
+  font-size: 1.1em; /* Leggermente ridotto */
+  color: var(--primary-text-color);
+  font-family: 'Rubik', sans-serif;
+  white-space: nowrap; /* Impedisce al nome di andare a capo */
+  overflow: hidden; /* Nasconde testo che eccede */
+  text-overflow: ellipsis; /* Aggiunge "..." se il nome è troppo lungo */
 }
+
 
 #chat-messages {
-    height: calc(65vh - 120px); /* Altezza dinamica meno header e input area */
-    min-height: 380px; /* Altezza minima per consistenza */
-    border: none; /* Rimuoviamo il bordo precedente se c'era */
-    padding: 15px; /* Più padding interno */
-    overflow-y: auto;
-    background-color: transparent; /* Lo sfondo sarà sul .chat-container */
-    display: flex;
-    flex-direction: column; /* Mantiene i messaggi in colonna */
+  flex-grow: 1; /* FONDAMENTALE: Fa sì che prenda tutto lo spazio verticale disponibile */
+  padding: 15px;
+  overflow-y: auto; /* Permette lo scroll verticale SOLO per i messaggi */
+  background-color: transparent; /* O il colore di sfondo che preferisci per l'area messaggi */
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Spazio tra le nuvolette */
 }
-
 /* Stile base per tutte le nuvolette */
 .message {
     padding: 10px 15px;
@@ -101,22 +124,27 @@
 
 
 #chat-input-area {
-    display: flex;
-    padding: 10px 15px;
-    border-top: 1px solid var(--border-color);
-    background-color: rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center; /* Allinea verticalmente input e bottone */
+  padding: 10px 15px; /* Leggermente ridotto */
+  border-top: 1px solid var(--border-color);
+  background-color: var(--chat-input-bg);
+  flex-shrink: 0; /* NON DEVE RESTRINGERSI: mantiene la sua altezza */
+  /* position: sticky; // Prova a Rimuovere questo se c'era e vedi se flexbox da solo risolve */
+  /* bottom: 0;       // Idem */
+  /* width: 100%;     // Idem, il contenitore flex dovrebbe gestire la larghezza */
 }
 
 #message-input {
-    flex-grow: 1;
-    padding: 12px 15px;
-    border: 1px solid var(--border-color);
-    border-radius: 20px; /* Input più arrotondato */
-    background-color: #2A3942; /* Sfondo input area WhatsApp */
-    color: var(--primary-text-color);
-    font-family: 'Roboto Mono', monospace;
-    font-size: 1rem;
-    margin-right: 10px;
+  flex-grow: 1;
+  padding: 10px 15px; /* Leggermente ridotto */
+  border: none;
+  border-radius: 20px;
+  background-color: #2a3942;
+  color: var(--primary-text-color);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.95rem; /* Leggermente ridotto per mobile */
+  margin-right: 8px; /* Spazio ridotto */
 }
 #message-input::placeholder {
     color: #8696A0; /* Colore placeholder */
@@ -124,7 +152,9 @@
 
 
 #send-button {
-    padding: 10px 18px;
+    padding: 0;
+  width: 40px; /* Ridotto */
+  height: 40px; /* Ridotto */
     background-color: var(--accent-color); /* Usa il colore accento */
     color: var(--bg-color); /* Testo scuro per contrasto */
     border: none;
@@ -132,7 +162,7 @@
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.2s ease;
-    display: flex;
+      flex-shrink: 0;
     align-items: center;
     justify-content: center;
 }
@@ -216,20 +246,33 @@
     .ginocchio-thumbnail span { font-size: 0.75rem; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
     .hidden-by-category, .hidden-by-name { display: none !important; }
     .chat-section { position: relative; }
-    .chat-container { background-color: var(--card-bg-color); margin: 0 auto; width: 100%; max-width: 800px; height: 65vh; min-height: 500px; max-height: 700px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6); }
-    iframe { width: 100%; height: 100%; border: none; }
-    #command-suggestion { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background-color: var(--accent-color); color: var(--bg-color); padding: 0.5rem 1rem; border-radius: 6px 6px 0 0; font-size: 0.9rem; z-index: 10; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; white-space: nowrap; box-shadow: 0 -2px 5px rgba(0,0,0,0.3); }
-    #command-suggestion.visible { opacity: 1; visibility: visible; } #command-suggestion code { background-color: rgba(0,0,0,0.2); padding: 0.1em 0.4em; border-radius: 3px; font-weight: bold; }
-   footer {
+    .chat-container {
   background-color: var(--card-bg-color);
-  /* margin-top: auto; // Non più strettamente necessario con body flex e main-content flex:1 */
-  padding: 2rem 0; /* Padding verticale, quello laterale sarà dal .container interno */
-  border-top: 2px solid var(--border-color);
-  text-align: center;
-  width: 100%; /* Assicura che occupi tutta la larghezza */
-  flex-shrink: 0; /* Impedisce al footer di restringersi */
-  box-sizing: border-box;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 800px;
+  /* Definisci un'altezza per il contenitore della chat.
+     Potresti usare vh (viewport height) o px.
+     Se usi vh, potrebbe essere meglio farlo su un contenitore esterno
+     alla chat se la chat è solo una parte del .main-content.
+     Per ora, impostiamo un'altezza e facciamo in modo che i figli si adattino.
+  */
+  height: 75vh; /* ESEMPIO: 75% dell'altezza della finestra visibile */
+  /* O un'altezza fissa se preferisci, es: height: 600px; */
+  /* O flex-grow:1 se .chat-section deve prendere lo spazio rimanente nel .main-content */
+
+  min-height: 450px; /* Altezza minima per avere spazio per gli elementi */
+  max-height: 800px; /* Limite massimo per schermi grandi */
+
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+
+  display: flex; /* FONDAMENTALE */
+  flex-direction: column; /* FONDAMENTALE: header, messaggi, input in colonna */
+  overflow: hidden; /* Nasconde qualsiasi contenuto che esce, utile per i bordi arrotondati */
 }
+
     footer p { font-size: 0.85rem; color: var(--secondary-text-color); margin-top: 1rem; opacity: 0.7; }
   </style>
 </head>
