@@ -275,6 +275,140 @@
 
     footer p { font-size: 0.85rem; color: var(--secondary-text-color); margin-top: 1rem; opacity: 0.7; }
   </style>
+  @media (max-width: 768px) {
+
+    /* ---- Layout Generale ---- */
+    .container {
+        padding: 0 1rem; /* Riduci leggermente il padding laterale se necessario */
+    }
+
+    header {
+        padding: 1.5rem 0; /* Riduci padding verticale dell'header */
+        /* margin-bottom: 2rem; // Rivedi i margini tra sezioni se serve */
+    }
+    header .description {
+        font-size: 1rem; /* Riduci leggermente font della descrizione header */
+    }
+    #logo-top {
+        max-height: 80px; /* Logo top un po' più piccolo */
+        margin-bottom: 1rem;
+    }
+    h1 { /* Se avevi ri-abilitato l'h1 generale del sito */
+        font-size: clamp(1.6rem, 6vw, 2.2rem);
+    }
+
+    .main-content {
+        padding-top: 1.5rem;
+        padding-bottom: 3rem; /* Potrebbe servire più spazio sopra il footer su mobile */
+        gap: 1.5rem; /* Riduci gap tra galleria e chat */
+    }
+
+    /* ---- Galleria Personaggi ---- */
+    #ginocchi-gallery-section {
+        padding: 1rem; /* Riduci padding sezione galleria */
+    }
+    #ginocchi-gallery-section h2 {
+        font-size: 1.3em; /* Riduci font titolo galleria */
+        margin-bottom: 0.8rem;
+    }
+    #category-filters {
+        gap: 0.5rem; /* Meno spazio tra i pulsanti filtro */
+        margin-bottom: 1rem;
+    }
+    .filter-btn {
+        padding: 0.5rem 1rem; /* Pulsanti filtro leggermente più piccoli */
+        font-size: 0.85rem;
+    }
+    #ginocchio-filter { /* Input per cercare personaggio */
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+        margin: 0 auto 1rem; /* Riduci margine inferiore */
+    }
+    #ginocchi-grid {
+        grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); /* Icone un po' più piccole o meno per riga */
+        gap: 0.8rem; /* Meno spazio tra le icone */
+    }
+    .ginocchio-thumbnail {
+        padding: 0.5rem;
+    }
+    .ginocchio-thumbnail img {
+        width: 60px; /* Icone thumbnail leggermente più piccole */
+        height: 60px;
+    }
+    .ginocchio-thumbnail span {
+        font-size: 0.7rem; /* Testo sotto icone più piccolo */
+    }
+
+
+    /* ---- Sezione Chat ---- */
+    .chat-container {
+        height: 70vh; /* Puoi provare a regolare questo per mobile */
+        /* Oppure: height: calc(100vh - 200px); // Altezza meno header/footer approssimativi della pagina intera */
+        min-height: 350px; /* Riduci altezza minima */
+        max-height: none; /* Potresti voler rimuovere max-height su mobile per sfruttare più spazio verticale */
+        border-radius: 10px; /* Bordi leggermente meno arrotondati */
+    }
+
+    #chat-header-dinamico {
+        padding: 8px 12px; /* Meno padding header chat */
+    }
+    #chat-header-dinamico img#chat-avatar-ginocchio {
+        width: 35px; /* Avatar più piccolo */
+        height: 35px;
+        margin-right: 8px;
+    }
+    #chat-header-dinamico h2 {
+        font-size: 1em; /* Nome personaggio più piccolo */
+    }
+
+    #chat-messages {
+        padding: 10px; /* Meno padding per i messaggi */
+        gap: 6px; /* Meno spazio tra le nuvolette */
+    }
+    .message {
+        padding: 8px 12px; /* Meno padding nuvolette */
+        font-size: 0.9rem; /* Font messaggi leggermente più piccolo */
+        max-width: 80%; /* Nuvolette possono essere un po' più larghe */
+    }
+
+    #chat-input-area {
+        padding: 8px 10px; /* Meno padding area input */
+    }
+    #message-input {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    #send-button {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+    }
+
+    /* ---- Footer ---- */
+    footer {
+        padding: 1.5rem 0;
+    }
+    #logo-bottom {
+        max-height: 50px; /* Logo footer più piccolo */
+    }
+    footer p {
+        font-size: 0.75rem;
+    }
+}
+
+/* Puoi aggiungere altri breakpoint se necessario, es. per schermi molto piccoli */
+@media (max-width: 480px) {
+    #ginocchi-grid {
+        grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); /* Ancora meno icone per riga */
+    }
+    .ginocchio-thumbnail img {
+        width: 50px;
+        height: 50px;
+    }
+     .message {
+        max-width: 85%; /* Nuvolette ancora un po' più larghe */
+    }
+}
 </head>
 <body>
 
