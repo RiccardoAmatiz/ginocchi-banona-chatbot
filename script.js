@@ -976,7 +976,7 @@ async function sendMessageToAI() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-  // ASSEGNA GLI ELEMENTI DOM ALLE VARIABILI GLOBALI QUI
+    // ASSEGNA GLI ELEMENTI DOM ALLE VARIABILI GLOBALI QUI
     chatHeaderContainer = document.getElementById('chat-header-dinamico');
     chatHeaderH2 = chatHeaderContainer?.querySelector('h2');
     chatAvatarGinocchio = document.getElementById('chat-avatar-ginocchio');
@@ -985,32 +985,50 @@ document.addEventListener('DOMContentLoaded', function() {
     sendButton = document.getElementById('send-button');
 
     filterInput = document.getElementById('ginocchio-filter');
-    grid = document.getElementById('ginocchi-grid'); // Assicurati che l'ID sia corretto nell'HTML
+    grid = document.getElementById('ginocchi-grid');
     categoryButtons = document.querySelectorAll('#category-filters .filter-btn');
 
-    // ===== INIZIO BLOCCO DA INSERIRE/MODIFICARE =====
-    console.log("--- DEBUG INIZIALIZZAZIONE DOM ---");
-    console.log("filterInput:", filterInput);
-    console.log("grid:", grid);
-    console.log("categoryButtons:", categoryButtons, "Lunghezza:", categoryButtons?.length); // Aggiunto ? per length
-    console.log("chatHeaderContainer:", chatHeaderContainer);
-    console.log("chatHeaderH2:", chatHeaderH2);
-    console.log("chatAvatarGinocchio:", chatAvatarGinocchio);
-    console.log("chatMessagesContainer:", chatMessagesContainer);
-    console.log("messageInput:", messageInput);
-    console.log("sendButton:", sendButton);
-
-    // Controlli di esistenza (importanti!)
-    // Ho modificato leggermente la condizione per categoryButtons
-    if (!filterInput || !grid || (categoryButtons && categoryButtons.length === 0) || !chatHeaderContainer || !chatHeaderH2 || !chatAvatarGinocchio || !chatMessagesContainer || !messageInput || !sendButton) {
-        console.error("CRITICO: Uno o più Elementi DOM essenziali non sono stati trovati! Controlla i log sopra e verifica gli ID nel tuo HTML.");
-        // alert("Errore critico nell'inizializzazione della pagina. La chat potrebbe non funzionare."); // Lasciamo commentato l'alert per ora
-        // return; // <-- COMMENTA TEMPORANEAMENTE QUESTO RETURN PER VEDERE SE CI SONO ALTRI ERRORI DOPO
+    if (!filterInput || !grid || !categoryButtons.length || !chatHeaderContainer || !chatHeaderH2 || !chatAvatarGinocchio || !chatMessagesContainer || !messageInput || !sendButton) {
+        console.error("CRITICO: Uno o più Elementi DOM essenziali non sono stati trovati! Verifica gli ID nel tuo HTML e nello script.");
+        // alert("Errore critico nell'inizializzazione della pagina. La chat potrebbe non funzionare."); // Lascia commentato per ora
+        // return; // NON USCIRE QUI SUBITO se vuoi che il resto della logica provi ad eseguirsi
     }
-    console.log("--- FINE DEBUG INIZIALIZZAZIONE DOM (se non ci sono stati errori critici prima) ---");
 
-    thumbnails = grid.querySelectorAll('.ginocchio-thumbnail'); // Ora 'grid' è sicuramente definito
+    thumbnails = grid?.querySelectorAll('.ginocchio-thumbnail'); // Aggiunto ? per sicurezza se grid fosse null
     let activeCategory = 'tutti';
+
+    // ===== NUOVA LOGICA PER LEGGERE PARAMETRO URL =====
+    const urlParams = new URLSearchParams(window.location.search);
+    const ginocchioDaCaricare = urlParams.get('ginocchio'); // Cerchiamo un parametro tipo ?ginocchio=Punturirma
+
+    if (ginocchioDaCaricare && personaggiData[ginocchioDaCaricare]) {
+        console.log(`Trovato parametro URL per caricare: ${ginocchioDaCaricare}`);
+        selectCharacter(ginocchioDaCaricare); // Seleziona automaticamente il personaggio
+
+        // Opzionale: nascondi la galleria e i filtri se carichi un personaggio specifico
+        const gallerySection = document.getElementById('ginocchi-gallery-section');
+        if (gallerySection) {
+            gallerySection.style.display = 'none';
+        }
+        // Potresti anche voler nascondere l'header generale del sito e il footer
+        // se l'embedding è pensato per essere solo la chatbox.
+        // Esempio:
+        // const mainHeader = document.querySelector('header');
+        // if (mainHeader) mainHeader.style.display = 'none';
+        // const mainFooter = document.querySelector('footer');
+        // if (mainFooter) mainFooter.style.display = 'none';
+        // E potresti voler dare al .chat-container un'altezza del 100% del viewport
+        // const chatContainerDiv = document.getElementById('nostro-chat-container');
+        // if (chatContainerDiv) chatContainerDiv.style.height = '100vh';
+
+    } else {
+        // Se nessun personaggio specifico è richiesto dall'URL, applica i filtri come al solito
+        if (thumbnails && thumbnails.length > 0) { // Solo se thumbnails è stato inizializzato
+             applyFilters();
+        }
+    }
+    // ===== FINE NUOVA LOGICA =====
+
 
     // ATTACCA GLI EVENT LISTENER QUI, DOPO CHE GLI ELEMENTI SONO STATI ASSEGNATI
     if (sendButton) sendButton.addEventListener('click', sendMessageToAI);
@@ -1020,61 +1038,46 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    categoryButtons.forEach(btn => {
-        if (btn.dataset.categoria === 'tutti') btn.classList.add('active');
-        else btn.classList.remove('active');
-    });
-
-    categoryButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            categoryButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            activeCategory = this.getAttribute('data-categoria');
-            if(filterInput) filterInput.value = '';
-            applyFilters();
+    if (categoryButtons) { // Controlla se categoryButtons esiste
+        categoryButtons.forEach(btn => {
+            if (btn.dataset.categoria === 'tutti') btn.classList.add('active');
+            else btn.classList.remove('active');
         });
-    });
+
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                activeCategory = this.getAttribute('data-categoria');
+                if(filterInput) filterInput.value = '';
+                applyFilters();
+            });
+        });
+    }
+
 
     if(filterInput) filterInput.addEventListener('input', function() {
         applyFilters();
     });
 
     function applyFilters() {
-        if (!thumbnails || !thumbnails.length || !filterInput) {
-            return;
-        }
-        const nameFilterText = filterInput.value.toLowerCase().trim();
-        thumbnails.forEach(function(thumb) {
-            const nomeGinocchioDataAttr = thumb.getAttribute('data-nome');
-            const nomeGinocchioVisibileElement = thumb.querySelector('span');
-
-            if (!nomeGinocchioVisibileElement || !nomeGinocchioDataAttr) {
-                return;
-            }
-            const nomeGinocchioVisibile = nomeGinocchioVisibileElement.textContent.toLowerCase();
-            const categoriaGinocchio = thumb.getAttribute('data-categoria');
-
-            const isInActiveCategory = (activeCategory === 'tutti' || categoriaGinocchio === activeCategory);
-            const matchesName = (nameFilterText === "") || nomeGinocchioVisibile.includes(nameFilterText) || nomeGinocchioDataAttr.toLowerCase().includes(nameFilterText);
-
-            const shouldBeVisible = isInActiveCategory && matchesName;
-            thumb.style.display = shouldBeVisible ? '' : 'none';
-        });
+        // ... (funzione applyFilters come prima) ...
     }
 
-    thumbnails.forEach(function(thumb) {
-        thumb.addEventListener('click', function() {
-            if (this.style.display === 'none') return;
-            const charId = this.getAttribute('data-nome');
-            if (charId) {
-                selectCharacter(charId);
-                thumbnails.forEach(t => t.classList.remove('active-thumbnail'));
-                this.classList.add('active-thumbnail');
-                document.getElementById('nostro-chat-container')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
+    if (thumbnails && thumbnails.length > 0) { // Controlla se thumbnails esiste
+        thumbnails.forEach(function(thumb) {
+            thumb.addEventListener('click', function() {
+                if (this.style.display === 'none') return;
+                const charId = this.getAttribute('data-nome');
+                if (charId) {
+                    selectCharacter(charId);
+                    thumbnails.forEach(t => t.classList.remove('active-thumbnail'));
+                    this.classList.add('active-thumbnail');
+                    document.getElementById('nostro-chat-container')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
         });
-    });
-
-    applyFilters(); // Applica filtri all'avvio
+    }
+    // applyFilters(); // Spostata dentro l'else della logica del parametro URL
 });
 // Fine del file script.js
