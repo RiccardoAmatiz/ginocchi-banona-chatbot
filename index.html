@@ -275,6 +275,43 @@
 
     footer p { font-size: 0.85rem; color: var(--secondary-text-color); margin-top: 1rem; opacity: 0.7; }
       @media (max-width: 768px) {
+/* Stili per la modalità embedding */
+body.embedded-mode header,
+body.embedded-mode footer,
+body.embedded-mode #ginocchi-gallery-section {
+    display: none !important; /* Nasconde header, footer e galleria */
+}
+
+body.embedded-mode .main-content {
+    padding-top: 0; /* Rimuove padding extra se header è nascosto */
+    padding-bottom: 0; /* Rimuove padding extra se footer è nascosto */
+    gap: 0; /* Rimuove gap se la galleria è nascosta */
+    height: 100vh; /* Fa sì che il main-content prenda tutta l'altezza del viewport dell'iframe */
+    max-width: 100%; /* Permette al main-content di riempire l'iframe */
+    padding-left: 0; /* Rimuovi padding laterali del container se vuoi che la chat sia a filo */
+    padding-right: 0;
+}
+
+body.embedded-mode .chat-section {
+     /* Se .main-content ora ha padding 0, .chat-section potrebbe non averne bisogno */
+     /* oppure potresti volerlo per centrare .chat-container se .main-content è più largo */
+}
+
+body.embedded-mode .chat-container {
+    height: 100%; /* Fa sì che il contenitore della chat occupi tutta l'altezza del .main-content (che è 100vh) */
+    width: 100%;  /* Occupa tutta la larghezza disponibile */
+    max-width: 100%; /* Sovrascrive il max-width precedente */
+    border-radius: 0; /* Opzionale: rimuovi i bordi arrotondati se vuoi che riempia l'iframe */
+    border: none;       /* Opzionale: rimuovi i bordi */
+    box-shadow: none;   /* Opzionale: rimuovi l'ombra */
+    margin: 0;          /* Rimuovi margini */
+}
+
+/* Opzionale: se vuoi che l'area messaggi occupi ancora più spazio in modalità embed */
+body.embedded-mode #chat-messages {
+    /* height: calc(100% - ALTEZZA_HEADER_CHAT - ALTEZZA_INPUT_AREA); */
+    /* Il flex-grow: 1 dovrebbe già fare questo, ma puoi essere più esplicito se necessario */
+}
 
     /* ---- Layout Generale ---- */
     .container {
