@@ -999,34 +999,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ===== NUOVA LOGICA PER LEGGERE PARAMETRO URL =====
     const urlParams = new URLSearchParams(window.location.search);
-    const ginocchioDaCaricare = urlParams.get('ginocchio'); // Cerchiamo un parametro tipo ?ginocchio=Punturirma
+   const ginocchioDaCaricare = urlParams.get('ginocchio');
 
-    if (ginocchioDaCaricare && personaggiData[ginocchioDaCaricare]) {
-        console.log(`Trovato parametro URL per caricare: ${ginocchioDaCaricare}`);
-        selectCharacter(ginocchioDaCaricare); // Seleziona automaticamente il personaggio
+   if (ginocchioDaCaricare && personaggiData[ginocchioDaCaricare]) {
+       console.log(`Modalità embedding attiva per: ${ginocchioDaCaricare}`);
+       document.body.classList.add('embedded-mode'); // Applica la classe per gli stili CSS specifici
 
-        // Opzionale: nascondi la galleria e i filtri se carichi un personaggio specifico
-        const gallerySection = document.getElementById('ginocchi-gallery-section');
-        if (gallerySection) {
-            gallerySection.style.display = 'none';
-        }
-        // Potresti anche voler nascondere l'header generale del sito e il footer
-        // se l'embedding è pensato per essere solo la chatbox.
-        // Esempio:
-        // const mainHeader = document.querySelector('header');
-        // if (mainHeader) mainHeader.style.display = 'none';
-        // const mainFooter = document.querySelector('footer');
-        // if (mainFooter) mainFooter.style.display = 'none';
-        // E potresti voler dare al .chat-container un'altezza del 100% del viewport
-        // const chatContainerDiv = document.getElementById('nostro-chat-container');
-        // if (chatContainerDiv) chatContainerDiv.style.height = '100vh';
+       selectCharacter(ginocchioDaCaricare); // Seleziona il personaggio
 
-    } else {
-        // Se nessun personaggio specifico è richiesto dall'URL, applica i filtri come al solito
-        if (thumbnails && thumbnails.length > 0) { // Solo se thumbnails è stato inizializzato
-             applyFilters();
-        }
-    }
+       // La logica per nascondere header, footer, galleria
+       // è ora gestita dalle regole CSS per 'body.embedded-mode'.
+       // Non è più necessario farlo qui con JavaScript.
+
+   } else {
+       // Comportamento normale se non c'è il parametro ?ginocchio= o non è valido
+       console.log("Nessun personaggio specifico da caricare via URL, o personaggio non valido. Avvio normale.");
+       if (thumbnails && thumbnails.length > 0) { // Assicurati che thumbnails sia definito
+            applyFilters(); // Applica i filtri solo se la galleria deve essere mostrata
+       } else if (thumbnails === undefined || thumbnails.length === 0 && grid) {
+           // Se grid esiste ma thumbnails non è stato popolato (forse perché il querySelectorAll non ha trovato nulla)
+           console.warn("La variabile 'thumbnails' non è stata inizializzata correttamente o non ci sono elementi '.ginocchio-thumbnail'. I filtri potrebbero non funzionare.");
+       }
+   }
+
     // ===== FINE NUOVA LOGICA =====
 
 
